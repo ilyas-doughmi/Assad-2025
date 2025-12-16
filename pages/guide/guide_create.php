@@ -1,3 +1,8 @@
+<?php 
+require_once("../../includes/auth/guard.php");
+require_role("guide");
+
+?>
 <!DOCTYPE html>
 <html lang="fr" class="dark">
 <head>
