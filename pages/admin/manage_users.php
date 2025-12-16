@@ -80,7 +80,7 @@ require_role("admin");
                 <img src="https://ui-avatars.com/api/?name=Super+Admin&background=C6A87C&color=000" class="w-10 h-10 rounded-full border border-gold">
                 <div>
                     <p class="text-sm font-bold text-white">Super Admin</p>
-                    <a href="logout.php" class="text-xs text-red-500 hover:text-red-400">Déconnexion</a>
+                    <a href="../../includes/auth/logout.php" class="text-xs text-red-500 hover:text-red-400">Déconnexion</a>
                 </div>
             </div>
         </div>

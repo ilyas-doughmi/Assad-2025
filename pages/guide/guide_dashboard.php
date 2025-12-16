@@ -80,7 +80,8 @@ require_role("guide");
                     <p class="text-xs text-green-500">● En ligne</p>
                 </div>
             </div>
-            <a href="logout.php" class="block mt-3 text-xs text-red-500 hover:text-red-400">Déconnexion</a>
+
+            <a href="../../includes/auth/../../includes/auth/logout.php" class="block mt-3 text-xs text-red-500 hover:text-red-400">Déconnexion</a>
         </div>
     </aside>
 

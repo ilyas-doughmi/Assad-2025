@@ -70,7 +70,7 @@ require_role("guide");
                 <div class="w-10 h-10 rounded-full bg-gray-800 border border-gold flex items-center justify-center text-gold font-bold">AB</div>
                 <div>
                     <p class="text-sm font-bold text-white">Ahmed B.</p>
-                    <a href="logout.php" class="text-xs text-red-500 hover:text-red-400">Déconnexion</a>
+                    <a href="../../includes/auth/logout.php" class="text-xs text-red-500 hover:text-red-400">Déconnexion</a>
                 </div>
             </div>
         </div>

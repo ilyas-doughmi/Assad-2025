@@ -42,7 +42,7 @@ require_role("guide");
 
         <div class="flex flex-col gap-3">
             <a href="index.php" class="text-gold hover:underline text-sm font-bold">Retour à l'accueil</a>
-            <a href="logout.php" class="text-gray-600 hover:text-white text-xs">Se déconnecter</a>
+            <a href="../../includes/auth/logout.php" class="text-gray-600 hover:text-white text-xs">Se déconnecter</a>
         </div>
     </div>
 
