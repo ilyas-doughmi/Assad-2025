@@ -23,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             session_start();
             $_SESSION["id"] = $user["id"];
             $_SESSION["role"] = $user["role"];
+            $_SESSION["isActive"] = $user["isActive"];
 
             switch($user["role"]){
                 case 'admin':
