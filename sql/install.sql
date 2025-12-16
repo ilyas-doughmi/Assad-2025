@@ -81,3 +81,8 @@ CREATE TABLE Comments (
     FOREIGN KEY (tour_id) REFERENCES Tours(id)
         ON DELETE CASCADE
 );
+
+
+-- adding admin (password is admin123)
+
+INSERT INTO users(full_name,email,password,role,isActive) VALUES("Ilyas Doughmi","admin@gmail.com","$2y$10$bSuhIS36G5C7c2NuqTXUmu3aBMLh5LYQXjmmAdQQas3aL8puDy7XW","admin",1);
