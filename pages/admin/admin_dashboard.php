@@ -120,11 +120,8 @@ require_role("admin");
                     <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition">
                         <i class="fa-solid fa-users text-6xl text-white"></i>
                     </div>
-                    <p class="text-gray-500 text-xs font-bold uppercase tracking-widest mb-2">Visiteurs Total</p>
-                    <h3 class="text-3xl font-bold text-white">1,240</h3>
-                    <p class="text-xs text-green-500 mt-2 flex items-center gap-1">
-                        <i class="fa-solid fa-arrow-trend-up"></i> +12% ce mois
-                    </p>
+                    <p class="text-gray-500 text-xs font-bold uppercase tracking-widest mb-2">Tout l'utilisateur</p>
+                    <h3 class="text-3xl font-bold text-white" id="users_text"></h3>
                 </div>
 
                 <div class="bg-dark-card border border-gold/30 p-6 rounded-xl shadow-[0_0_15px_rgba(198,168,124,0.1)] relative overflow-hidden">
@@ -132,7 +129,7 @@ require_role("admin");
                         <i class="fa-solid fa-user-shield text-6xl text-gold"></i>
                     </div>
                     <p class="text-gold text-xs font-bold uppercase tracking-widest mb-2">Guides en Attente</p>
-                    <h3 class="text-3xl font-bold text-white">3</h3>
+                    <h3 class="text-3xl font-bold text-white" id="not_active_count"></h3>
                     <p class="text-xs text-gray-400 mt-2">Action requise</p>
                 </div>
 
@@ -261,5 +258,38 @@ require_role("admin");
             </div>
         </div>
     </main>
+
+    <script>
+        getUsersCount();
+        getNotActiveUsers();
+        function getUsersCount(){
+            const users_text = document.getElementById("users_text");
+            let data = new FormData();
+            data.append("users_count","all");
+            fetch("../../includes/admin/users_data.php",{
+                method : "POST",
+                body : data
+        })
+        .then(response=>response.text())
+        .then(data=>{
+            users_text.innerText = data;
+        })
+        }
+
+         function getNotActiveUsers(){
+            const not_active_count = document.getElementById("not_active_count");
+            let data = new FormData();
+            data.append("users_not_active","all");
+            fetch("../../includes/admin/users_data.php",{
+                method : "POST",
+                body : data
+        })
+        .then(response=>response.json())
+        .then(data=>{
+            not_active_count.innerText = data;
+        })
+        }
+
+    </script>
 </body>
 </html>
