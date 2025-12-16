@@ -108,7 +108,7 @@
                 <p class="text-gray-400 text-sm mt-1">Veuillez remplir les informations ci-dessous.</p>
             </div>
 
-            <form action="#" method="POST" class="space-y-5" id="registerForm">
+            <form action="includes/auth/register.php" method="POST" class="space-y-5" id="registerForm">
                 
                 <div class="space-y-2">
                     <label class="text-xs font-semibold text-gray-500 uppercase tracking-widest">Je veux être</label>
@@ -148,21 +148,11 @@
                 <div class="space-y-1">
                     <label class="text-xs font-semibold text-gray-500 uppercase tracking-widest ml-1">Mot de passe</label>
                     <div class="relative">
-                        <input type="password" id="password" class="atlas-input w-full bg-[#111] border border-gray-800 text-gray-200 text-sm rounded-lg py-3 px-4 focus:outline-none transition-all placeholder-gray-600">
+                        <input name="password" type="password" id="password" class="atlas-input w-full bg-[#111] border border-gray-800 text-gray-200 text-sm rounded-lg py-3 px-4 focus:outline-none transition-all placeholder-gray-600">
                         <button type="button" class="absolute right-3 top-3 text-gray-500 hover:text-atlas-gold toggle-pass"><i class="fa-regular fa-eye"></i></button>
                     </div>
                 </div>
 
-                <div class="space-y-1">
-                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-widest ml-1">Confirmer mot de passe</label>
-                    <div class="relative">
-                        <input type="password" id="confirm_password" class="atlas-input w-full bg-[#111] border border-gray-800 text-gray-200 text-sm rounded-lg py-3 px-4 focus:outline-none transition-all placeholder-gray-600">
-                        <div id="pass-match-icon" class="absolute right-3 top-3 hidden">
-                            <i class="fa-solid fa-check text-green-500"></i>
-                        </div>
-                    </div>
-                    <p id="error-msg" class="text-xs text-red-500 hidden mt-1">Les mots de passe ne correspondent pas.</p>
-                </div>
 
                 <div class="flex items-start gap-2 pt-2">
                     <input type="checkbox" required class="mt-1 rounded bg-gray-800 border-gray-700 text-atlas-gold focus:ring-0">
@@ -198,28 +188,6 @@
                 }
             });
         });
-
-        // 2. Live Password Match Check
-        const pass = document.getElementById('password');
-        const confirm = document.getElementById('confirm_password');
-        const matchIcon = document.getElementById('pass-match-icon');
-        const errorMsg = document.getElementById('error-msg');
-
-        confirm.addEventListener('input', function() {
-            if(confirm.value === pass.value && confirm.value !== '') {
-                matchIcon.classList.remove('hidden');
-                errorMsg.classList.add('hidden');
-                confirm.classList.remove('border-red-500');
-                confirm.classList.add('border-green-500/50');
-            } else {
-                matchIcon.classList.add('hidden');
-                if(confirm.value !== '') {
-                    confirm.classList.add('border-red-500');
-                    // errorMsg.classList.remove('hidden'); 
-                }
-            }
-        });
-
         // 3. Guide Role Hint
         const radios = document.getElementsByName('role');
         const guideHint = document.getElementById('guide-hint');
