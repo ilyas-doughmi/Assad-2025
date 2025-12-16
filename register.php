@@ -1,3 +1,11 @@
+<?php
+$message = "";
+    if(isset($_GET["message"])){
+        $message = $_GET["message"];
+    }
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr" class="dark">
 <head>
@@ -172,6 +180,21 @@
             </div>
         </div>
     </div>
+    <!-- Notification Bar -->
+<div id="notify"
+     class="fixed top-6 right-6 z-50 <?= empty($message) ? 'hidden' : '' ?> items-center gap-3 px-5 py-4 rounded-xl
+            bg-[#141414] border border-atlas-gold/30 text-gray-200 shadow-2xl
+            backdrop-blur-md max-w-sm">
+
+    <!-- Icon -->
+    <i class="fa-solid fa-circle-check text-atlas-gold text-xl"></i>
+
+    <!-- Message -->
+    <span class="text-sm font-medium">
+        <?= $message ?>
+    </span>
+</div>
+
 
     <script>
         // 1. Password Visibility

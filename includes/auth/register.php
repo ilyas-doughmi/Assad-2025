@@ -1,7 +1,7 @@
 <?php
 
 require_once("../db.php");
-
+$message = "";
 
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $role = $_POST["role"];
@@ -22,10 +22,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     }
 
     mysqli_stmt_bind_param($stmt,"ssssi",$nom,$email,$password,$role,$isVisitor);
+    try{
+        mysqli_stmt_execute($stmt);
+        $message = "register success";
 
-    mysqli_stmt_execute($stmt);
+    }catch(mysqli_sql_exception){
+        $message = "problem happend";
+    }
 
-    header("location: ../../login.php?message='register success'");
+    header("location: ../../register.php?message=".$message);
     exit();
-
 }
