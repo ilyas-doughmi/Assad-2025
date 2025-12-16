@@ -3,32 +3,35 @@ require_once("../db.php");
 
 
 if(isset($_POST["users_count"])){
-    getUsersCount();
+    $type = $_POST["users_count"];
+    switch($type){
+        case "all":  echo getUsersCount(""); break;
+        case "notactiveusers": echo getUsersCount("WHERE isActive = 0 AND role = 'guide'");break;
+        default:
+        echo "0";
+        break;
+
+    }
 }
 
 if(isset($_POST["users"])){
     getUsers();
 }
 
-if(isset($_POST["users_not_active"])){
-    getNotActiveUsers();
-}
 
 
-function getUsersCount(){
+function getUsersCount($condition = ""){
     global $conn;
-    $query= "SELECT COUNT(*) as count FROM users";
+    $query= "SELECT COUNT(*) as count FROM users $condition";
     $result = mysqli_query($conn,$query);
+    if($result){
     $row = mysqli_fetch_assoc($result);
-    echo $row["count"];
+    return $row["count"];
+    }
+    return 0;
+   
 }
-function getNotActiveUsers(){
-    global $conn;
-    $query= "SELECT COUNT(*) as count FROM users WHERE isActive = 0 AND role = 'guide'";
-    $result = mysqli_query($conn,$query);
-    $row = mysqli_fetch_assoc($result);
-    echo $row["count"];
-}
+
 
 function getUsers(){
     global $conn;

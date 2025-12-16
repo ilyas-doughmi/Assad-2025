@@ -279,7 +279,7 @@ require_role("admin");
          function getNotActiveUsers(){
             const not_active_count = document.getElementById("not_active_count");
             let data = new FormData();
-            data.append("users_not_active","all");
+            data.append("users_count","notactiveusers");
             fetch("../../includes/admin/users_data.php",{
                 method : "POST",
                 body : data
