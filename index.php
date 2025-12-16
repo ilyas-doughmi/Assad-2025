@@ -70,8 +70,8 @@
             <div class="hidden md:flex items-center gap-8 text-sm uppercase tracking-wider font-medium text-gray-300">
                 <a href="#" class="text-white border-b border-gold">Accueil</a>
                 <a href="pages/asaad.php" class="hover:text-gold transition-colors">L'Esprit Asaad</a>
-                <a href="#" class="hover:text-gold transition-colors">Animaux</a>
-                <a href="#" class="hover:text-gold transition-colors">Visites</a>
+                <a href="pages/animals.php" class="hover:text-gold transition-colors">Animaux</a>
+                <a href="pages/tours.php" class="hover:text-gold transition-colors">Visites</a>
             </div>
 
             <div class="flex items-center gap-4">
