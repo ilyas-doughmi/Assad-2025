@@ -12,8 +12,8 @@ function require_login()
 
 function require_role($role_needed)
 {
-    if (!isset($_SESSION["role"]) || $_SESSION["role"] == $role_needed) {
-        header("location: ../../index.php?message=no access");
+    if (!isset($_SESSION["role"]) || $_SESSION["role"] != $role_needed) {
+        header("location: ../../index.php?message=no_access");
         exit();
     }
 }
