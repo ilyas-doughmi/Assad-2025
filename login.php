@@ -95,7 +95,7 @@
                 </p>
             </div>
 
-            <form action="#" method="POST" class="space-y-6">
+            <form action="includes/auth/login.php" method="POST" class="space-y-6">
                 
                 <div class="space-y-1">
                     <label class="text-xs font-semibold text-gray-500 uppercase tracking-widest ml-1">Identifiant</label>
@@ -103,7 +103,7 @@
                         <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-500">
                             <i class="fa-regular fa-user"></i>
                         </span>
-                        <input type="email" placeholder="Email institutionnel ou personnel" 
+                        <input name="email" type="email" placeholder="Email institutionnel ou personnel" 
                             class="atlas-input w-full bg-[#111] border border-gray-800 text-gray-200 text-sm rounded-lg py-3.5 pl-11 focus:outline-none transition-all duration-300 placeholder-gray-600">
                     </div>
                 </div>
@@ -116,7 +116,7 @@
                         <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-gray-500">
                             <i class="fa-solid fa-lock"></i>
                         </span>
-                        <input type="password" id="password" placeholder="••••••••••••" 
+                        <input name="password" type="password" id="password" placeholder="••••••••••••" 
                             class="atlas-input w-full bg-[#111] border border-gray-800 text-gray-200 text-sm rounded-lg py-3.5 pl-11 pr-10 focus:outline-none transition-all duration-300 placeholder-gray-600">
                         <button type="button" id="togglePass" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 hover:text-atlas-gold transition-colors">
                             <i class="fa-regular fa-eye"></i>
