@@ -3,33 +3,46 @@
 require_once("../db.php");
 $message = "";
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $password = $_POST["password"];
 
     $query = "SELECT * FROM users WHERE email = ?";
-    $stmt = mysqli_prepare($conn,$query);
+    $stmt = mysqli_prepare($conn, $query);
 
-     if($stmt === false){
-        die("Error prepare statement".mysqli_error($conn));
+    if ($stmt === false) {
+        die("Error prepare statement" . mysqli_error($conn));
     }
 
-    mysqli_stmt_bind_param($stmt,"s",$email);
-    mysqli_stmt_execute($stmt); 
+    mysqli_stmt_bind_param($stmt, "s", $email);
+    mysqli_stmt_execute($stmt);
 
     $result = mysqli_stmt_get_result($stmt);
-    if($user=  mysqli_fetch_assoc($result)){
-        if(password_verify($password,$user["password"])){
-            $message = "Login Succ";    
-        }
-        else{
+    if ($user =  mysqli_fetch_assoc($result)) {
+        if (password_verify($password, $user["password"])) {
+            session_start();
+            $_SESSION["id"] = $user["id"];
+            $_SESSION["role"] = $user["role"];
+
+            switch($user["role"]){
+                case 'admin':
+                    header("location: ../../pages/admin/admin_dashboard.php");
+                    exit();
+                case 'guide':
+                    header("location: ../../pages/guide/guide_dashboard.php");
+                    exit();
+                default:
+                    header("location: ../../index.php");
+                    exit();
+            }
+            $message = "Login Succ";
+        } else {
             $message = "password problem";
         }
-    }
-    else{
+    } else {
         $message = "account not found";
     }
 
-                header("location: ../../login.php?message=".$message);
-exit();
+    header("location: ../../login.php?message=" . $message);
+    exit();
 }
