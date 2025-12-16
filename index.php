@@ -1,3 +1,12 @@
+<?php
+session_start();
+$isConnected = true;
+if(!isset($_SESSION["id"])){
+    $isConnected = false;
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr" class="dark">
 <head>
@@ -66,20 +75,52 @@
                     <span class="block text-[0.6rem] text-gold uppercase tracking-[0.2em] -mt-1">Maroc 2025</span>
                 </div>
             </a>
-
-            <div class="hidden md:flex items-center gap-8 text-sm uppercase tracking-wider font-medium text-gray-300">
+        <?php  if($isConnected == true){?>
+              <div class="hidden md:flex items-center gap-8 text-sm uppercase tracking-wider font-medium text-gray-300">
                 <a href="#" class="text-white border-b border-gold">Accueil</a>
                 <a href="pages/asaad.php" class="hover:text-gold transition-colors">L'Esprit Asaad</a>
                 <a href="pages/animals.php" class="hover:text-gold transition-colors">Animaux</a>
                 <a href="pages/tours.php" class="hover:text-gold transition-colors">Visites</a>
             </div>
+        <?php } ?>
+          
+<?php if($isConnected == false){ ?>
+    
+    <div class="flex items-center gap-4">
+        <a href="login.php" class="hidden md:block text-sm font-bold text-gray-300 hover:text-white transition-colors">Connexion</a>
+        <a href="register.php" class="px-6 py-2 bg-gold text-black text-sm font-bold rounded-sm uppercase tracking-widest hover:bg-white transition-colors shadow-lg shadow-gold/20">
+            Rejoindre
+        </a>
+    </div>
 
-            <div class="flex items-center gap-4">
-                <a href="login.php" class="hidden md:block text-sm font-bold text-gray-300 hover:text-white transition-colors">Connexion</a>
-                <a href="register.php" class="px-6 py-2 bg-gold text-black text-sm font-bold rounded-sm uppercase tracking-widest hover:bg-white transition-colors shadow-lg shadow-gold/20">
-                    Rejoindre
-                </a>
-            </div>
+<?php } else { ?>
+
+    <div class="flex items-center gap-4">
+        
+        <?php 
+        $dashboardUrl = "";
+        if($_SESSION["role"] == "admin") {
+            $dashboardUrl = "pages/admin/admin_dashboard.php";
+        } elseif($_SESSION["role"] == "guide" && $_SESSION["isActive"] == true) {
+            $dashboardUrl = "pages/guide/guide_dashboard.php";
+        }
+
+        if($dashboardUrl !== ""): 
+        ?>
+            <a href="<?= $dashboardUrl ?>" class="hidden md:block text-sm font-bold text-gray-300 hover:text-white transition-colors">
+                Dashboard
+            </a> 
+        <?php endif; ?>
+
+        <a href="includes/auth/logout.php" class="px-6 py-2 bg-red-600 text-white text-sm font-bold rounded-sm uppercase tracking-widest hover:bg-white hover:text-black transition-colors shadow-lg shadow-gold/20">
+            Déconnexion
+        </a>
+    </div>
+
+<?php } ?>
+            
+
+
         </div>
     </nav>
 
