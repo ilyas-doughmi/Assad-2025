@@ -4,7 +4,7 @@ require_once("../../db.php");
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $user_id = $_POST["user_id"];
     
-    $query = "UPDATE users SET role = 'refused' WHERE id = ?";
+    $query = "UPDATE users SET isBanned = 1 WHERE id = ?";
 
     $stmt = mysqli_prepare($conn,$query);
     
