@@ -121,22 +121,80 @@ require_role("admin");
                             <th class="px-6 py-4 text-right">Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-white/5">
-                        
-                        <tr class="hover:bg-white/5 transition group">
+                    <tbody id="users_container" class="divide-y divide-white/5">
+                    
+
+                     
+
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="flex justify-between items-center mt-6">
+                <p class="text-xs text-gray-500">Affichage de 1 à 4 sur 12 utilisateurs</p>
+                <div class="flex gap-2">
+                    <button class="px-3 py-1 bg-black border border-white/10 rounded text-gray-500 hover:text-white transition">Précédent</button>
+                    <button class="px-3 py-1 bg-gold text-black font-bold rounded">1</button>
+                    <button class="px-3 py-1 bg-black border border-white/10 rounded text-gray-500 hover:text-white transition">Suivant</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+         show_all();
+        document.getElementById('userSearch').addEventListener('input', function() {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                let text = row.innerText.toLowerCase();
+                if(text.includes(filter)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+
+        function toggleBan(userId) {
+            if(confirm("Êtes-vous sûr de vouloir désactiver cet utilisateur ? Il ne pourra plus se connecter.")) {
+                // Here you would redirect to PHP script
+                // window.location.href = 'ban_user.php?id=' + userId;
+                alert("Action simulée: Utilisateur " + userId + " désactivé.");
+            }
+        }
+
+        function show_all(){
+             let card;
+            const container = document.getElementById("users_container");
+            let data = new FormData();
+            data.append("users","all");
+            fetch("../../includes/admin/users_data.php",{
+                method: "POST",
+                body: data
+            })
+            .then(response=>response.json())
+            .then(data=>{
+                data.forEach(function(e){
+                    console.log(e);
+
+                    if(e.isActive == 0 && e.isBanned == 0){
+                            card = ` <tr class="hover:bg-white/5 transition group">
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
                                     <div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white font-bold">YA</div>
                                     <div>
-                                        <p class="text-white font-bold">Youssef Amrani</p>
-                                        <p class="text-xs">youssef@guide.ma</p>
+                                        <p class="text-white font-bold">${e.full_name}</p>
+                                        <p class="text-xs">${e.email}</p>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4">
                                 <span class="px-2 py-1 rounded bg-purple-900/30 text-purple-400 border border-purple-900/50 text-xs font-bold">GUIDE</span>
                             </td>
-                            <td class="px-6 py-4">15 Déc. 2025</td>
+                            <td class="px-6 py-4">${e.created_at}</td>
                             <td class="px-6 py-4">
                                 <span class="px-2 py-1 rounded bg-yellow-900/30 text-yellow-500 border border-yellow-900/50 text-xs font-bold flex items-center w-fit gap-1">
                                     <span class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></span> En attente
@@ -160,48 +218,23 @@ require_role("admin");
                                     </form>
                                 </div>
                             </td>
-                        </tr>
-
-                        <tr class="hover:bg-white/5 transition">
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white font-bold">JD</div>
-                                    <div>
-                                        <p class="text-white font-bold">John Doe</p>
-                                        <p class="text-xs">john@gmail.com</p>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 py-1 rounded bg-blue-900/30 text-blue-400 border border-blue-900/50 text-xs font-bold">VISITEUR</span>
-                            </td>
-                            <td class="px-6 py-4">12 Déc. 2025</td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 py-1 rounded bg-green-900/30 text-green-500 border border-green-900/50 text-xs font-bold">
-                                    Actif
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <button onclick="toggleBan(202)" class="text-gray-500 hover:text-red-500 transition" title="Désactiver / Bannir">
-                                    <i class="fa-solid fa-power-off"></i>
-                                </button>
-                            </td>
-                        </tr>
-
-                         <tr class="hover:bg-white/5 transition">
+                        </tr>`
+                    }
+                    else if(e.isActive == 1 && e.isBanned == 0){
+                        card = `<tr class="hover:bg-white/5 transition">
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
                                     <div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white font-bold">SO</div>
                                     <div>
-                                        <p class="text-white font-bold">Sarah Oulad</p>
-                                        <p class="text-xs">sarah@guide.ma</p>
+                                        <p class="text-white font-bold">${e.full_name}</p>
+                                        <p class="text-xs">${e.email}</p>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4">
-                                <span class="px-2 py-1 rounded bg-purple-900/30 text-purple-400 border border-purple-900/50 text-xs font-bold">GUIDE</span>
+                                <span class="px-2 py-1 rounded bg-purple-900/30 text-purple-400 border border-purple-900/50 text-xs font-bold">${e.role}</span>
                             </td>
-                            <td class="px-6 py-4">10 Déc. 2025</td>
+                            <td class="px-6 py-4">${e.created_at}</td>
                             <td class="px-6 py-4">
                                 <span class="px-2 py-1 rounded bg-green-900/30 text-green-500 border border-green-900/50 text-xs font-bold">
                                     Actif
@@ -212,20 +245,23 @@ require_role("admin");
                                     <i class="fa-solid fa-power-off"></i>
                                 </button>
                             </td>
-                        </tr>
+                        </tr>`
+                    }
 
+                    else if(e.isBanned = 1){
+                        card = `
                         <tr class="hover:bg-white/5 transition opacity-60">
                             <td class="px-6 py-4">
                                 <div class="flex items-center gap-3">
                                     <div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-500 font-bold">XX</div>
                                     <div>
-                                        <p class="text-gray-400 font-bold line-through">Spam Bot</p>
-                                        <p class="text-xs">bot@spam.com</p>
+                                        <p class="text-gray-400 font-bold line-through">${e.full_name}</p>
+                                        <p class="text-xs">${e.email}</p>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4">
-                                <span class="px-2 py-1 rounded bg-gray-800 text-gray-500 text-xs font-bold">VISITEUR</span>
+                                <span class="px-2 py-1 rounded bg-gray-800 text-gray-500 text-xs font-bold">${e.role}</span>
                             </td>
                             <td class="px-6 py-4">01 Déc. 2025</td>
                             <td class="px-6 py-4">
@@ -238,46 +274,15 @@ require_role("admin");
                                     <i class="fa-solid fa-rotate-left"></i>
                                 </button>
                             </td>
-                        </tr>
+                        </tr>`
+                    }
+                   
 
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="flex justify-between items-center mt-6">
-                <p class="text-xs text-gray-500">Affichage de 1 à 4 sur 12 utilisateurs</p>
-                <div class="flex gap-2">
-                    <button class="px-3 py-1 bg-black border border-white/10 rounded text-gray-500 hover:text-white transition">Précédent</button>
-                    <button class="px-3 py-1 bg-gold text-black font-bold rounded">1</button>
-                    <button class="px-3 py-1 bg-black border border-white/10 rounded text-gray-500 hover:text-white transition">Suivant</button>
-                </div>
-            </div>
+                    container.insertAdjacentHTML("afterbegin",card);
 
-        </div>
-    </main>
-
-    <script>
-        document.getElementById('userSearch').addEventListener('input', function() {
-            let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll('tbody tr');
-            
-            rows.forEach(row => {
-                let text = row.innerText.toLowerCase();
-                if(text.includes(filter)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        });
-
-        function toggleBan(userId) {
-            if(confirm("Êtes-vous sûr de vouloir désactiver cet utilisateur ? Il ne pourra plus se connecter.")) {
-                // Here you would redirect to PHP script
-                // window.location.href = 'ban_user.php?id=' + userId;
-                alert("Action simulée: Utilisateur " + userId + " désactivé.");
+                })
+            })
             }
-        }
     </script>
 </body>
 </html>
