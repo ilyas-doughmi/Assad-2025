@@ -143,7 +143,7 @@ require_role("admin");
     </main>
 
     <script>
-         show_all();
+        show_all();
         document.getElementById('userSearch').addEventListener('input', function() {
             let filter = this.value.toLowerCase();
             let rows = document.querySelectorAll('tbody tr');
@@ -169,7 +169,6 @@ require_role("admin");
         function show_all(){
              let card;
             const container = document.getElementById("users_container");
-            container.innerHTML = "";
             let data = new FormData();
             data.append("users","all");
             fetch("../../includes/admin/users_data.php",{
@@ -178,8 +177,8 @@ require_role("admin");
             })
             .then(response=>response.json())
             .then(data=>{
+                container.innerHTML = "";
                 data.forEach(function(e){
-                    console.log(e);
                     if(e.isActive == 0 && e.isBanned == 0){
                             card = ` <tr class="hover:bg-white/5 transition group">
                             <td class="px-6 py-4">
@@ -233,7 +232,7 @@ require_role("admin");
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <button class="text-gray-500 hover:text-red-500 transition" title="Désactiver / Bannir">
+                                <button onclick="reject_guide(${e.id})" class="text-gray-500 hover:text-red-500 transition" title="Désactiver / Bannir">
                                     <i class="fa-solid fa-power-off"></i>
                                 </button>
                             </td>
@@ -262,7 +261,7 @@ require_role("admin");
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <button class="text-gray-500 hover:text-green-500 transition" title="Réactiver">
+                                <button onclick="active_account(${e.id})" class="text-gray-500 hover:text-green-500 transition" title="Réactiver">
                                     <i class="fa-solid fa-rotate-left"></i>
                                 </button>
                             </td>
@@ -285,7 +284,6 @@ require_role("admin");
                     body: data
                 })
                 .then(response=>response.text())
-                .then(data=>console.log(data,id));
                 show_all();
             }
 
@@ -297,8 +295,19 @@ require_role("admin");
                     body: data
                 })
                 .then(response=>response.text())
-                .then(data=>console.log(data,id));
                 show_all();
+            }
+            function active_account(id){
+                       let data = new FormData();
+                data.append("user_id",id);
+                fetch("../../includes/admin/actions/active_account.php",{
+                    method: "POST",
+                    body: data
+                })
+                .then(response=>response.text())
+                
+                show_all();
+                
             }
     </script>
 </body>
