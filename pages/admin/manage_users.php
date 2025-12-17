@@ -169,6 +169,7 @@ require_role("admin");
         function show_all(){
              let card;
             const container = document.getElementById("users_container");
+            container.innerHTML = "";
             let data = new FormData();
             data.append("users","all");
             fetch("../../includes/admin/users_data.php",{
@@ -179,7 +180,6 @@ require_role("admin");
             .then(data=>{
                 data.forEach(function(e){
                     console.log(e);
-
                     if(e.isActive == 0 && e.isBanned == 0){
                             card = ` <tr class="hover:bg-white/5 transition group">
                             <td class="px-6 py-4">
@@ -202,20 +202,12 @@ require_role("admin");
                             </td>
                             <td class="px-6 py-4 text-right">
                                 <div class="flex items-center justify-end gap-2">
-                                    <form action="approve_user.php" method="POST">
-                                        <input type="hidden" name="user_id" value="101">
-                                        <input type="hidden" name="action" value="approve">
-                                        <button type="submit" class="w-8 h-8 rounded bg-green-900/30 text-green-500 hover:bg-green-500 hover:text-black border border-green-900/50 transition flex items-center justify-center" title="Approuver">
+                                        <button onclick="approve_guide(${e.id})" type="submit" class="w-8 h-8 rounded bg-green-900/30 text-green-500 hover:bg-green-500 hover:text-black border border-green-900/50 transition flex items-center justify-center" title="Approuver">
                                             <i class="fa-solid fa-check"></i>
                                         </button>
-                                    </form>
-                                    <form action="approve_user.php" method="POST">
-                                        <input type="hidden" name="user_id" value="101">
-                                        <input type="hidden" name="action" value="reject">
-                                        <button type="submit" class="w-8 h-8 rounded bg-red-900/30 text-red-500 hover:bg-red-500 hover:text-black border border-red-900/50 transition flex items-center justify-center" title="Rejeter">
+                                        <button onclick="reject_guide(${e.id})" type="submit" class="w-8 h-8 rounded bg-red-900/30 text-red-500 hover:bg-red-500 hover:text-black border border-red-900/50 transition flex items-center justify-center" title="Rejeter">
                                             <i class="fa-solid fa-xmark"></i>
                                         </button>
-                                    </form>
                                 </div>
                             </td>
                         </tr>`
@@ -248,7 +240,7 @@ require_role("admin");
                         </tr>`
                     }
 
-                    else if(e.isBanned = 1){
+                    else if(e.isBanned = 1 || e.isActive == 1){
                         card = `
                         <tr class="hover:bg-white/5 transition opacity-60">
                             <td class="px-6 py-4">
@@ -263,7 +255,7 @@ require_role("admin");
                             <td class="px-6 py-4">
                                 <span class="px-2 py-1 rounded bg-gray-800 text-gray-500 text-xs font-bold">${e.role}</span>
                             </td>
-                            <td class="px-6 py-4">01 Déc. 2025</td>
+                            <td class="px-6 py-4">${e.created_at}</td>
                             <td class="px-6 py-4">
                                 <span class="px-2 py-1 rounded bg-red-900/30 text-red-500 border border-red-900/50 text-xs font-bold">
                                     Banni
@@ -282,6 +274,31 @@ require_role("admin");
 
                 })
             })
+            }
+
+
+            function approve_guide(id){
+                   let data = new FormData();
+                data.append("user_id",id);
+                fetch("../../includes/admin/actions/approve_guide.php",{
+                    method: "POST",
+                    body: data
+                })
+                .then(response=>response.text())
+                .then(data=>console.log(data,id));
+                show_all();
+            }
+
+            function reject_guide(id){
+                  let data = new FormData();
+                data.append("user_id",id);
+                fetch("../../includes/admin/actions/refuse_guide.php",{
+                    method: "POST",
+                    body: data
+                })
+                .then(response=>response.text())
+                .then(data=>console.log(data,id));
+                show_all();
             }
     </script>
 </body>
