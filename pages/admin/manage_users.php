@@ -100,15 +100,6 @@ require_role("admin");
 
         <div class="flex-1 overflow-y-auto p-8 bg-[#0a0a0a]">
             
-            <div class="flex border-b border-white/10 mb-6">
-                <button class="px-6 py-3 text-sm font-bold text-gold border-b-2 border-gold">Tous</button>
-                <button class="px-6 py-3 text-sm font-bold text-gray-500 hover:text-white transition relative">
-                    Guides en attente
-                    <span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-gold animate-pulse"></span>
-                </button>
-                <button class="px-6 py-3 text-sm font-bold text-gray-500 hover:text-white transition">Visiteurs</button>
-                <button class="px-6 py-3 text-sm font-bold text-gray-500 hover:text-white transition">Bannis</button>
-            </div>
 
             <div class="bg-dark-card border border-white/5 rounded-xl overflow-hidden shadow-lg">
                 <table class="w-full text-left text-sm text-gray-400">
@@ -129,16 +120,7 @@ require_role("admin");
                     </tbody>
                 </table>
             </div>
-            
-            <div class="flex justify-between items-center mt-6">
-                <p class="text-xs text-gray-500">Affichage de 1 à 4 sur 12 utilisateurs</p>
-                <div class="flex gap-2">
-                    <button class="px-3 py-1 bg-black border border-white/10 rounded text-gray-500 hover:text-white transition">Précédent</button>
-                    <button class="px-3 py-1 bg-gold text-black font-bold rounded">1</button>
-                    <button class="px-3 py-1 bg-black border border-white/10 rounded text-gray-500 hover:text-white transition">Suivant</button>
-                </div>
-            </div>
-
+                
         </div>
     </main>
 
