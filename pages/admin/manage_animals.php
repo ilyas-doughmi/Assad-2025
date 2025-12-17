@@ -109,57 +109,19 @@ require_role("admin");
                         <tr>
                             <th class="px-6 py-4">Image</th>
                             <th class="px-6 py-4">Nom</th>
-                            <th class="px-6 py-4">Espèce</th>
-                            <th class="px-6 py-4">Habitat</th>
+                            <th class="px-6 py-4">description_courte</th>
+                            <th class="px-6 py-4">Alimentation</th>
                             <th class="px-6 py-4">Pays</th>
+                            <th class="px-6 py-4">espece</th>
                             <th class="px-6 py-4 text-right">Actions</th>
+
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-white/5">
+                    <tbody id="animals_container" class="divide-y divide-white/5">
                         
-                        <tr class="hover:bg-white/5 transition">
-                            <td class="px-6 py-4">
-                                <img src="https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?q=80&w=1986&auto=format&fit=crop" class="w-12 h-12 rounded-lg object-cover border border-gray-700">
-                            </td>
-                            <td class="px-6 py-4 font-bold text-white">Asaad</td>
-                            <td class="px-6 py-4 italic">Lion de l'Atlas</td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 py-1 rounded bg-gray-700 text-gray-300 text-xs font-bold">Montagne</span>
-                            </td>
-                            <td class="px-6 py-4">Maroc</td>
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex justify-end gap-2">
-                                    <button onclick="openModal('edit', {id:1, name:'Asaad', species:'Lion Atlas', country:'Maroc', habitat:3})" class="w-8 h-8 rounded border border-gray-600 hover:border-gold hover:text-gold transition flex items-center justify-center">
-                                        <i class="fa-solid fa-pen"></i>
-                                    </button>
-                                    <button class="w-8 h-8 rounded border border-gray-600 hover:border-red-500 hover:text-red-500 transition flex items-center justify-center">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
+                      
 
-                        <tr class="hover:bg-white/5 transition">
-                            <td class="px-6 py-4">
-                                <img src="https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?q=80&w=1932&auto=format&fit=crop" class="w-12 h-12 rounded-lg object-cover border border-gray-700">
-                            </td>
-                            <td class="px-6 py-4 font-bold text-white">Kian</td>
-                            <td class="px-6 py-4 italic">Éléphant d'Afrique</td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 py-1 rounded bg-yellow-900/30 text-yellow-500 text-xs font-bold">Savane</span>
-                            </td>
-                            <td class="px-6 py-4">Kenya</td>
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex justify-end gap-2">
-                                    <button class="w-8 h-8 rounded border border-gray-600 hover:border-gold hover:text-gold transition flex items-center justify-center">
-                                        <i class="fa-solid fa-pen"></i>
-                                    </button>
-                                    <button class="w-8 h-8 rounded border border-gray-600 hover:border-red-500 hover:text-red-500 transition flex items-center justify-center">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
+                   
 
                     </tbody>
                 </table>
@@ -265,6 +227,49 @@ require_role("admin");
 
         function closeModal() {
             modal.classList.add('hidden');
+        }
+
+getAnimals();
+        function getAnimals(){
+            const animals_container = document.getElementById("animals_container");
+            let data = new FormData();
+            data.append("animals","");
+
+            fetch("../../includes/admin/animal_data.php",{
+                method : "POST",
+                body: data
+            })
+            .then(response => response.json())
+            .then(data=>
+                data.forEach(function(e){
+                    console.log(e);
+                    const card = `  <tr class="hover:bg-white/5 transition">
+                            <td class="px-6 py-4">
+                                <img src="${e.image}" class="w-12 h-12 rounded-lg object-cover border border-gray-700">
+                            </td>
+                            <td class="px-6 py-4 font-bold text-white">${e.nom}</td>
+                            <td class="px-6 py-4 italic">${e.description_courte}</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 rounded bg-gray-700 text-gray-300 text-xs font-bold">${e.alimentation}</span>
+                            </td>
+                            <td class="px-6 py-4">${e.pays_origin}</td>
+                                                        <td class="px-6 py-4">${e.espece}</td>
+
+                            <td class="px-6 py-4 text-right">
+                                <div class="flex justify-end gap-2">
+                                    <button onclick="openModal('edit', {id:1, name:'Asaad', species:'Lion Atlas', country:'Maroc', habitat:3})" class="w-8 h-8 rounded border border-gray-600 hover:border-gold hover:text-gold transition flex items-center justify-center">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                    <button class="w-8 h-8 rounded border border-gray-600 hover:border-red-500 hover:text-red-500 transition flex items-center justify-center">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>`
+                        animals_container.insertAdjacentHTML("afterbegin",card);
+                })
+
+            )
         }
     </script>
 </body>
