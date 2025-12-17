@@ -15,7 +15,14 @@ if(isset($_POST["users_count"])){
 }
 
 if(isset($_POST["users"])){
-    getUsers();
+    $type = $_POST["users"];
+    switch($type){
+        case "all": echo getUsers("");break;
+        case "pending": echo getUsers("WHERE isActive = 0 AND role = 'guide'");break;
+        default:
+        echo "no one found";
+        break;
+    }
 }
 
 
@@ -33,12 +40,12 @@ function getUsersCount($condition = ""){
 }
 
 
-function getUsers(){
+function getUsers($user_condition){
     global $conn;
-    $query = "SELECT * FROM users";
+    $query = "SELECT * FROM users $user_condition";
     $result = mysqli_query($conn,$query);
 
     $row = mysqli_fetch_all($result,MYSQLI_ASSOC);
 
-    echo json_encode($row);
+    return json_encode($row);
 }
