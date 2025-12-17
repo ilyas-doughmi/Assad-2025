@@ -137,7 +137,7 @@ require_role("admin");
                         <i class="fa-solid fa-paw text-6xl text-white"></i>
                     </div>
                     <p class="text-gray-500 text-xs font-bold uppercase tracking-widest mb-2">Animaux Recensés</p>
-                    <h3 class="text-3xl font-bold text-white">45</h3>
+                    <h3 class="text-3xl font-bold text-white" id="animals_count"></h3>
                     <p class="text-xs text-gray-500 mt-2">5 Habitats</p>
                 </div>
 
@@ -212,6 +212,7 @@ require_role("admin");
 
     <script>
         getUsersCount();
+        getAnimalsCount();
         getNotActiveUsers();
         function getUsersCount(){
             const users_text = document.getElementById("users_text");
@@ -303,6 +304,20 @@ show_app();
                 .then(response=>response.text())
                 .then(data=>console.log(data,id));
                 show_app();
+            }
+
+
+            // animals //
+            function getAnimalsCount(){
+                const animals_count = document.getElementById("animals_count");
+                let data = new FormData();
+                data.append("animals_count","")
+                fetch("../../includes/admin/animal_data.php",{
+                    method: "POST",
+                    body: data
+                })
+                .then(response=>response.text())
+                .then(data=>animals_count.textContent = data)
             }
             
     </script>
