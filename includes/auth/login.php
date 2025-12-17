@@ -20,12 +20,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $result = mysqli_stmt_get_result($stmt);
     if ($user =  mysqli_fetch_assoc($result)) {
         if (password_verify($password, $user["password"])) {
-            session_start();
-            $_SESSION["id"] = $user["id"];
-            $_SESSION["role"] = $user["role"];
-            $_SESSION["isActive"] = $user["isActive"];
-
-            switch($user["role"]){
+            if($user["isBanned"] == 1){
+                header("location: ../../index.php?message=account_banned");
+                exit();
+            }
+            else{
+                session_start();
+                $_SESSION["id"] = $user["id"];
+                $_SESSION["role"] = $user["role"];
+                $_SESSION["isActive"] = $user["isActive"];
+                 switch($user["role"]){
                 case 'admin':
                     header("location: ../../pages/admin/admin_dashboard.php");
                     exit();
@@ -36,6 +40,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     header("location: ../../index.php");
                     exit();
             }
+            }
+           
+      
+           
             $message = "Login Succ";
         } else {
             $message = "password problem";
