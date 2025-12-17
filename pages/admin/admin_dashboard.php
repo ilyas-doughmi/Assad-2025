@@ -66,7 +66,6 @@ require_role("admin");
             <a href="manage_users.php" class="flex items-center px-8 py-3 text-gray-400 hover:text-white hover:bg-white/5 transition group">
                 <i class="fa-solid fa-users w-6 group-hover:text-gold transition"></i>
                 <span class="text-sm font-medium">Utilisateurs</span>
-                <span class="ml-auto bg-gold text-black text-[10px] font-bold px-2 py-0.5 rounded-full">3</span>
             </a>
 
             <a href="manage_animals.php" class="flex items-center px-8 py-3 text-gray-400 hover:text-white hover:bg-white/5 transition group">
