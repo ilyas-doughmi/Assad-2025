@@ -244,6 +244,7 @@ require_role("admin");
 show_app();
         function show_app(){
             const app_container = document.getElementById("app_container");
+            app_container.innerHTML = "";
             let data = new FormData();
             data.append("users","pending");
             fetch("../../includes/admin/users_data.php",{
@@ -261,24 +262,17 @@ show_app();
                                 </div>
                                 <div>
                                     <p class="text-sm font-bold text-white">${e.full_name}</p>
-                                    <p class="text-xs text-gray-500">Inscrit: il y a 2h</p>
+                                    <p class="text-xs text-gray-500">${e.email}</p>
                                 </div>
                             </div>
                             <div class="flex gap-2 w-full">
-                                <form action="approve_guide.php" method="POST" class="w-1/2">
-                                    <input type="hidden" name="user_id" value="101">
-                                    <input type="hidden" name="action" value="approve">
-                                    <button class="w-full py-2 bg-green-900/30 text-green-500 border border-green-900 rounded hover:bg-green-900/50 text-xs font-bold transition">
+                                    <button onclick="acceptRequest(${e.id})" class="w-full py-2 bg-green-900/30 text-green-500 border border-green-900 rounded hover:bg-green-900/50 text-xs font-bold transition">
                                         <i class="fa-solid fa-check mr-1"></i> Valider
                                     </button>
-                                </form>
-                                <form action="approve_guide.php" method="POST" class="w-1/2">
-                                    <input type="hidden" name="user_id" value="101">
-                                    <input type="hidden" name="action" value="reject">
-                                    <button class="w-full py-2 bg-red-900/30 text-red-500 border border-red-900 rounded hover:bg-red-900/50 text-xs font-bold transition">
+                        
+                                    <button onclick="refuseRequest(${e.id})" class="w-full py-2 bg-red-900/30 text-red-500 border border-red-900 rounded hover:bg-red-900/50 text-xs font-bold transition">
                                         <i class="fa-solid fa-xmark mr-1"></i> Refuser
                                     </button>
-                                </form>
                             </div>
                         </div>`
 
@@ -287,6 +281,31 @@ show_app();
             })
             }
 
+
+            function acceptRequest(id){
+                let data = new FormData();
+                data.append("user_id",id);
+                fetch("../../includes/admin/actions/approve_guide.php",{
+                    method: "POST",
+                    body: data
+                })
+                .then(response=>response.text())
+                .then(data=>console.log(data,id));
+                show_app();
+            }
+
+             function refuseRequest(id){
+                let data = new FormData();
+                data.append("user_id",id);
+                fetch("../../includes/admin/actions/approve_guide.php",{
+                    method: "POST",
+                    body: data
+                })
+                .then(response=>response.text())
+                .then(data=>console.log(data,id));
+                show_app();
+            }
+            
     </script>
 </body>
 </html>
