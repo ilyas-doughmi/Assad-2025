@@ -202,55 +202,7 @@ require_role("admin");
                         <a href="manage_users.php" class="text-xs text-gold hover:underline">Voir tout</a>
                     </div>
 
-                    <div class="flex-1 overflow-y-auto p-4 space-y-3">
-                        
-                        <div class="bg-black/40 p-4 rounded-lg border border-white/5 flex flex-col gap-3">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400">
-                                    <i class="fa-solid fa-user"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-bold text-white">Youssef Amrani</p>
-                                    <p class="text-xs text-gray-500">Inscrit: il y a 2h</p>
-                                </div>
-                            </div>
-                            <div class="flex gap-2 w-full">
-                                <form action="approve_guide.php" method="POST" class="w-1/2">
-                                    <input type="hidden" name="user_id" value="101">
-                                    <input type="hidden" name="action" value="approve">
-                                    <button class="w-full py-2 bg-green-900/30 text-green-500 border border-green-900 rounded hover:bg-green-900/50 text-xs font-bold transition">
-                                        <i class="fa-solid fa-check mr-1"></i> Valider
-                                    </button>
-                                </form>
-                                <form action="approve_guide.php" method="POST" class="w-1/2">
-                                    <input type="hidden" name="user_id" value="101">
-                                    <input type="hidden" name="action" value="reject">
-                                    <button class="w-full py-2 bg-red-900/30 text-red-500 border border-red-900 rounded hover:bg-red-900/50 text-xs font-bold transition">
-                                        <i class="fa-solid fa-xmark mr-1"></i> Refuser
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-
-                        <div class="bg-black/40 p-4 rounded-lg border border-white/5 flex flex-col gap-3">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400">
-                                    <i class="fa-solid fa-user"></i>
-                                </div>
-                                <div>
-                                    <p class="text-sm font-bold text-white">Sarah Oulad</p>
-                                    <p class="text-xs text-gray-500">Inscrit: il y a 5h</p>
-                                </div>
-                            </div>
-                            <div class="flex gap-2 w-full">
-                                <button class="w-1/2 py-2 bg-green-900/30 text-green-500 border border-green-900 rounded hover:bg-green-900/50 text-xs font-bold transition">
-                                    <i class="fa-solid fa-check mr-1"></i> Valider
-                                </button>
-                                <button class="w-1/2 py-2 bg-red-900/30 text-red-500 border border-red-900 rounded hover:bg-red-900/50 text-xs font-bold transition">
-                                    <i class="fa-solid fa-xmark mr-1"></i> Refuser
-                                </button>
-                            </div>
-                        </div>
+                    <div id="app_container" class="flex-1 overflow-y-auto p-4 space-y-3">                                         
 
                     </div>
                 </div>
@@ -289,6 +241,51 @@ require_role("admin");
             not_active_count.innerText = data;
         })
         }
+show_app();
+        function show_app(){
+            const app_container = document.getElementById("app_container");
+            let data = new FormData();
+            data.append("users","pending");
+            fetch("../../includes/admin/users_data.php",{
+                method: "POST",
+                body: data
+            })
+            .then(response=>response.json())
+            .then(data=>{
+                data.forEach(function(e){
+                    
+                    const card = ` <div class="bg-black/40 p-4 rounded-lg border border-white/5 flex flex-col gap-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-gray-400">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-white">${e.full_name}</p>
+                                    <p class="text-xs text-gray-500">Inscrit: il y a 2h</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2 w-full">
+                                <form action="approve_guide.php" method="POST" class="w-1/2">
+                                    <input type="hidden" name="user_id" value="101">
+                                    <input type="hidden" name="action" value="approve">
+                                    <button class="w-full py-2 bg-green-900/30 text-green-500 border border-green-900 rounded hover:bg-green-900/50 text-xs font-bold transition">
+                                        <i class="fa-solid fa-check mr-1"></i> Valider
+                                    </button>
+                                </form>
+                                <form action="approve_guide.php" method="POST" class="w-1/2">
+                                    <input type="hidden" name="user_id" value="101">
+                                    <input type="hidden" name="action" value="reject">
+                                    <button class="w-full py-2 bg-red-900/30 text-red-500 border border-red-900 rounded hover:bg-red-900/50 text-xs font-bold transition">
+                                        <i class="fa-solid fa-xmark mr-1"></i> Refuser
+                                    </button>
+                                </form>
+                            </div>
+                        </div>`
+
+                        app_container.insertAdjacentHTML("afterbegin",card);
+                })
+            })
+            }
 
     </script>
 </body>
