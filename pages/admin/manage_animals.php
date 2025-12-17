@@ -282,6 +282,18 @@ require_role("admin");
                 getAnimals();
             });
         }
+        function deleteAnimal(id) {
+            if(confirm("Êtes-vous sûr de vouloir supprimer cet animal ?")) {
+                let data = new FormData();
+                data.append("id", id);
+                fetch("../../includes/admin/animals_actions/delete_animal.php", {
+                    method: "POST",
+                    body: data
+                })
+                .then(response => response.text())
+                .then(() => getAnimals());
+            }
+        }
 
         getAnimals();
 
