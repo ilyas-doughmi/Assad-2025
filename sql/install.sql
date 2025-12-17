@@ -13,6 +13,9 @@ CREATE TABLE Animal (
     nom VARCHAR(255) NOT NULL,
     espece VARCHAR(255),
     pays_origin VARCHAR(255),
+    image VARCHAR(255),
+    description_courte TEXT,
+    alimentation VARCHAR(255),
     habitat_id INT,
 
     FOREIGN KEY (habitat_id) REFERENCES Habitat(id)
@@ -117,30 +120,32 @@ INSERT INTO Habitat (nom, description, image) VALUES
 );
 
 
--- inserting animals
+-- inserting habitat
 
-INSERT INTO Animal (nom, espece, pays_origin, habitat_id) VALUES
--- Savane
-('Lion', 'Panthera leo', 'Kenya', 1),
-('Éléphant d’Afrique', 'Loxodonta africana', 'Tanzanie', 1),
-('Girafe', 'Giraffa camelopardalis', 'Afrique du Sud', 1),
+INSERT INTO Habitat (nom, description, image) VALUES
+('Savane', 'Vastes plaines herbeuses, domaine des grands prédateurs.', 'savane.jpg'),
+('Forêt tropicale', 'Végétation dense et humide, riche en biodiversité.', 'foret_tropicale.jpg'),
+('Désert', 'Environnement aride aux températures extrêmes.', 'desert.jpg'),
+('Zone polaire', 'Terres de glace et de froid intense.', 'zone_polaire.jpg'),
+('Jungle', 'Forêt impénétrable abritant des espèces mystérieuses.', 'jungle.jpg'),
+('Rivière', 'Cours d eau douce et zones humides.', 'riviere.jpg');
 
--- Forêt tropicale
-('Perroquet Ara', 'Ara macao', 'Brésil', 2),
-('Jaguar', 'Panthera onca', 'Amazonie', 2),
-('Grenouille dendrobate', 'Dendrobates tinctorius', 'Colombie', 2),
+-- insert animals
+INSERT INTO Animal (nom, espece, pays_origin, habitat_id, image, description_courte, alimentation) VALUES
+-- Savane (ID: 1)
+('Asaad', 'Panthera leo leo', 'Maroc', 1, 'https://images.unsplash.com/photo-1614027164847-1b28cfe1df60', 'Le majestueux Lion de l\'Atlas, symbole de force et de noblesse.', 'Carnivore'),
+('Kian', 'Loxodonta africana', 'Tanzanie', 1, 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46', 'Le plus grand mammifère terrestre, connu pour sa sagesse.', 'Herbivore'),
+('Zola', 'Giraffa camelopardalis', 'Afrique du Sud', 1, 'https://images.unsplash.com/photo-1541789094913-f3809a8f3ba5', 'Une élégance naturelle qui domine la savane de toute sa hauteur.', 'Herbivore'),
 
--- Désert
-('Dromadaire', 'Camelus dromedarius', 'Maroc', 3),
-('Fennec', 'Vulpes zerda', 'Sahara', 3),
-('Scorpion jaune', 'Leiurus quinquestriatus', 'Égypte', 3),
+-- Jungle (ID: 5)
+('Kong', 'Gorilla beringei', 'Congo', 5, 'https://images.unsplash.com/photo-1535940587886-905c8680c656', 'Un colosse au dos argenté, protecteur de son clan.', 'Omnivore'),
+('Rio', 'Ara macao', 'Brésil', 5, 'https://images.unsplash.com/photo-1552728089-57bdde30beb8', 'Un tourbillon de couleurs volant à travers la canopée.', 'Frugivore'),
 
--- Zone polaire
-('Ours polaire', 'Ursus maritimus', 'Arctique', 4),
-('Manchot empereur', 'Aptenodytes forsteri', 'Antarctique', 4),
-('Phoque', 'Phoca vitulina', 'Groenland', 4),
+-- Désert (ID: 3)
+('Sahara', 'Vulpes zerda', 'Maroc', 3, 'https://images.unsplash.com/photo-1570347854605-6a585e509c8e', 'Le fennec, petit renard des sables aux grandes oreilles.', 'Omnivore'),
+('Dromadaire', 'Camelus dromedarius', 'Maroc', 3, 'https://images.unsplash.com/photo-1598454443452-98aa42db260e', 'Le vaisseau du désert, infatigable voyageur.', 'Herbivore'),
 
--- Jungle
-('Tigre', 'Panthera tigris', 'Inde', 5),
-('Singe capucin', 'Cebus capucinus', 'Costa Rica', 5),
-('Serpent Boa', 'Boa constrictor', 'Brésil', 5);
+-- Rivière (ID: 6)
+('Sobek', 'Crocodylus niloticus', 'Égypte', 6, 'https://images.unsplash.com/photo-1516021677334-93c0490f2378', 'Le redoutable gardien des eaux du Nil.', 'Carnivore');
+
+
