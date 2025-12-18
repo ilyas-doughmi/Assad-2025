@@ -73,7 +73,7 @@ $message = "";
             background-color: rgba(198, 168, 124, 0.1);
         }
         .role-radio:checked + div .role-icon {
-            color: #C6A87C;s
+            color: #C6A87C;
         }
     </style>
 </head>
