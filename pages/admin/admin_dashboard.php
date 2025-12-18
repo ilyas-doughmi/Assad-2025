@@ -138,7 +138,7 @@ require_role("admin");
                     </div>
                     <p class="text-gray-500 text-xs font-bold uppercase tracking-widest mb-2">Animaux Recensés</p>
                     <h3 class="text-3xl font-bold text-white" id="animals_count"></h3>
-                    <p class="text-xs text-gray-500 mt-2">5 Habitats</p>
+                    <p class="text-xs text-gray-500 mt-2"><span id="h_count"></span> Habitats</p>
                 </div>
 
                 <div class="bg-dark-card border border-white/5 p-6 rounded-xl shadow-lg relative overflow-hidden">
@@ -214,6 +214,7 @@ require_role("admin");
         getUsersCount();
         getAnimalsCount();
         getNotActiveUsers();
+        getHabitatsCount();
         function getUsersCount(){
             const users_text = document.getElementById("users_text");
             let data = new FormData();
@@ -319,6 +320,20 @@ show_app();
                 .then(response=>response.text())
                 .then(data=>animals_count.textContent = data)
             }
+
+
+            // habitats
+            function getHabitatsCount(){
+                const h_count = document.getElementById("h_count");
+                let data = new FormData();
+                data.append("habitat_count","")
+                fetch("../../includes/admin/habitat_data.php",{
+                    method: "POST",
+                    body: data
+                })
+                .then(response=>response.text())
+                .then(data=>h_count.textContent = data)
+            }            
             
     </script>
 </body>
