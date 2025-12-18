@@ -97,84 +97,13 @@ require_role("admin");
                             <th class="px-6 py-4">Image</th>
                             <th class="px-6 py-4">Nom de l'Habitat</th>
                             <th class="px-6 py-4">Description</th>
-                            <th class="px-6 py-4">Type de Climat</th>
-                            <th class="px-6 py-4">Zone Zoo</th>
                             <th class="px-6 py-4 text-right">Actions</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-white/5">
+                    <tbody id="h_container" class="divide-y divide-white/5">
                         
-                        <tr class="hover:bg-white/5 transition">
-                            <td class="px-6 py-4">
-                                <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?q=80&w=2068&auto=format&fit=crop" class="w-16 h-10 rounded-md object-cover border border-gray-700">
-                            </td>
-                            <td class="px-6 py-4 font-bold text-white">Savane Africaine</td>
-                            <td class="px-6 py-4 truncate max-w-xs">Vastes plaines herbeuses pour les grands mammifères.</td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 py-1 rounded bg-yellow-900/30 text-yellow-500 border border-yellow-900/50 text-xs font-bold">
-                                    <i class="fa-solid fa-sun mr-1"></i> Aride
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 text-gray-300">Zone Sud</td>
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex justify-end gap-2">
-                                    <button onclick="openModal('edit', {id:1, name:'Savane Africaine', desc:'Vastes plaines...', climate:'aride', zone:'sud'})" class="w-8 h-8 rounded border border-gray-600 hover:border-gold hover:text-gold transition flex items-center justify-center">
-                                        <i class="fa-solid fa-pen"></i>
-                                    </button>
-                                    <button class="w-8 h-8 rounded border border-gray-600 hover:border-red-500 hover:text-red-500 transition flex items-center justify-center">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
 
-                        <tr class="hover:bg-white/5 transition">
-                            <td class="px-6 py-4">
-                                <img src="https://images.unsplash.com/photo-1543169107-19d93618386c?q=80&w=2070&auto=format&fit=crop" class="w-16 h-10 rounded-md object-cover border border-gray-700">
-                            </td>
-                            <td class="px-6 py-4 font-bold text-white">Jungle Congolaise</td>
-                            <td class="px-6 py-4 truncate max-w-xs">Forêt dense et humide pour les primates.</td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 py-1 rounded bg-green-900/30 text-green-500 border border-green-900/50 text-xs font-bold">
-                                    <i class="fa-solid fa-cloud-rain mr-1"></i> Tropical
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 text-gray-300">Zone Ouest</td>
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex justify-end gap-2">
-                                    <button onclick="openModal('edit', {id:2, name:'Jungle Congolaise', desc:'Forêt dense...', climate:'tropical', zone:'ouest'})" class="w-8 h-8 rounded border border-gray-600 hover:border-gold hover:text-gold transition flex items-center justify-center">
-                                        <i class="fa-solid fa-pen"></i>
-                                    </button>
-                                    <button class="w-8 h-8 rounded border border-gray-600 hover:border-red-500 hover:text-red-500 transition flex items-center justify-center">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
 
-                        <tr class="hover:bg-white/5 transition">
-                            <td class="px-6 py-4">
-                                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2070&auto=format&fit=crop" class="w-16 h-10 rounded-md object-cover border border-gray-700">
-                            </td>
-                            <td class="px-6 py-4 font-bold text-white">Montagnes de l'Atlas</td>
-                            <td class="px-6 py-4 truncate max-w-xs">Relief rocheux et climat froid pour Asaad.</td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 py-1 rounded bg-blue-900/30 text-blue-400 border border-blue-900/50 text-xs font-bold">
-                                    <i class="fa-solid fa-snowflake mr-1"></i> Froid
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 text-gray-300">Zone Nord</td>
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex justify-end gap-2">
-                                    <button onclick="openModal('edit', {id:3, name:'Montagnes Atlas', desc:'Relief rocheux...', climate:'froid', zone:'nord'})" class="w-8 h-8 rounded border border-gray-600 hover:border-gold hover:text-gold transition flex items-center justify-center">
-                                        <i class="fa-solid fa-pen"></i>
-                                    </button>
-                                    <button class="w-8 h-8 rounded border border-gray-600 hover:border-red-500 hover:text-red-500 transition flex items-center justify-center">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
 
                     </tbody>
                 </table>
@@ -279,6 +208,47 @@ require_role("admin");
 
         function closeModal() {
             modal.classList.add('hidden');
+        }
+getHabitats();
+
+        function getHabitats(){
+            const h_container = document.getElementById("h_container");
+            let data = new FormData();
+
+            data.append("habitat","");
+
+            fetch("../../includes/admin/habitat_data.php",{
+                method : "POST",
+                body : data
+            })
+
+            .then(response=>response.json())
+            .then(data=>{
+                           data.forEach(function(e){
+                            console.log(e);
+                const card = `                        <tr class="hover:bg-white/5 transition">
+                            <td class="px-6 py-4">
+                                <img src="${e.image}" class="w-16 h-10 rounded-md object-cover border border-gray-700">
+                            </td>
+                            <td class="px-6 py-4 font-bold text-white">${e.nom}</td>
+                            <td class="px-6 py-4 truncate max-w-xs">${e.description}</td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="flex justify-end gap-2">
+                                    <button onclick="openModal('edit', {id:1, name:'Savane Africaine', desc:'Vastes plaines...', climate:'aride', zone:'sud'})" class="w-8 h-8 rounded border border-gray-600 hover:border-gold hover:text-gold transition flex items-center justify-center">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                    <button class="w-8 h-8 rounded border border-gray-600 hover:border-red-500 hover:text-red-500 transition flex items-center justify-center">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>`
+
+                        h_container.insertAdjacentHTML("afterbegin",card);
+            })
+            }
+ 
+        )
         }
     </script>
 </body>
