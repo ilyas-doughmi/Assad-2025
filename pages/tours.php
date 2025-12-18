@@ -54,44 +54,52 @@
         </div>
     </div>
 
-    <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div id="tour_container" class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-3 gap-8">
         
-        <div class="bg-[#111] border border-white/5 rounded-xl overflow-hidden group hover:border-gold/50 transition">
+      
+
+
+    </div>
+
+    <script>
+        showTours();
+        function showTours(){
+            const tour_container = document.getElementById("tour_container");
+            let card;
+            let data = new FormData();
+            data.append("gettours","");
+
+            fetch("../includes/guide/visite_data.php",{
+                method:"POST",
+                body:data
+            })
+            .then(response=>response.json())
+            .then(data=>{
+                data.forEach(function(e){
+                    console.log(e);
+                    const card = `  <div class="bg-[#111] border border-white/5 rounded-xl overflow-hidden group hover:border-gold/50 transition">
             <div class="h-56 relative overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1549366021-9f761d450615?q=80&w=1935" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                <img src="${e.tour_image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
                 <div class="absolute top-4 left-4 bg-green-900/80 text-green-400 text-[10px] font-bold px-2 py-1 rounded border border-green-500/30">DISPONIBLE</div>
             </div>
             <div class="p-6">
-                <h3 class="font-serif text-xl text-white mb-2 group-hover:text-gold transition">Safari Nocturne</h3>
+                <h3 class="font-serif text-xl text-white mb-2 group-hover:text-gold transition">${e.titre}</h3>
                 <div class="flex gap-4 text-xs text-gray-400 mb-4">
-                    <span><i class="fa-regular fa-clock text-gold mr-1"></i> 20 Déc, 21:00</span>
-                    <span><i class="fa-solid fa-language text-gold mr-1"></i> FR</span>
+                    <span><i class="fa-regular fa-clock text-gold mr-1"></i>${e.date_heure_debut}</span>
+                    <span><i class="fa-solid fa-language text-gold mr-1"></i> ${e.langue}</span>
                 </div>
                 <div class="flex justify-between items-center border-t border-white/10 pt-4">
-                    <span class="text-xl font-bold text-white">150 DH</span>
-                    <a href="tour_details.php" class="text-gold text-sm font-bold hover:underline">Voir détails <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                    <span class="text-xl font-bold text-white">${e.prix} DH</span>
+                    <a href="tour_details.php?id=${e.id}" class="text-gold text-sm font-bold hover:underline">Voir détails <i class="fa-solid fa-arrow-right ml-1"></i></a>
                 </div>
             </div>
-        </div>
+        </div>`
 
-        <div class="bg-[#111] border border-white/5 rounded-xl overflow-hidden group hover:border-gold/50 transition">
-            <div class="h-56 relative overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1547721064-da6cfb341d50?q=80&w=1887" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                <div class="absolute top-4 left-4 bg-orange-900/80 text-orange-400 text-[10px] font-bold px-2 py-1 rounded border border-orange-500/30">DERNIÈRES PLACES</div>
-            </div>
-            <div class="p-6">
-                <h3 class="font-serif text-xl text-white mb-2 group-hover:text-gold transition">Petit-Déj Girafes</h3>
-                <div class="flex gap-4 text-xs text-gray-400 mb-4">
-                    <span><i class="fa-regular fa-clock text-gold mr-1"></i> 21 Déc, 08:30</span>
-                    <span><i class="fa-solid fa-language text-gold mr-1"></i> EN</span>
-                </div>
-                <div class="flex justify-between items-center border-t border-white/10 pt-4">
-                    <span class="text-xl font-bold text-white">200 DH</span>
-                    <a href="tour_details.php" class="text-gold text-sm font-bold hover:underline">Voir détails <i class="fa-solid fa-arrow-right ml-1"></i></a>
-                </div>
-            </div>
-        </div>
-
-    </div>
+        tour_container.insertAdjacentHTML("afterbegin",card);
+                })
+            })
+            
+        }
+    </script>
 </body>
 </html>
