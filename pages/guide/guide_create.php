@@ -187,15 +187,11 @@ require_role("guide");
                                 <div class="flex gap-4">
                                     <div class="flex-1">
                                         <label class="text-[10px] uppercase text-gray-500 font-bold">Titre de l'étape</label>
-                                        <input type="text" name="steps[0][title]" placeholder="Ex: Rencontre avec les Lions" class="bg-transparent border-b border-gray-700 w-full text-white text-sm py-1 focus:border-gold focus:outline-none">
-                                    </div>
-                                    <div class="w-32">
-                                        <label class="text-[10px] uppercase text-gray-500 font-bold">Durée (min)</label>
-                                        <input type="number" name="steps[0][duration]" placeholder="15" class="bg-transparent border-b border-gray-700 w-full text-white text-sm py-1 focus:border-gold focus:outline-none">
+                                        <input id="title_step_0" type="text" name="steps[0][title]" placeholder="Ex: Rencontre avec les Lions" class="bg-transparent border-b border-gray-700 w-full text-white text-sm py-1 focus:border-gold focus:outline-none">
                                     </div>
                                 </div>
                                 <div class="mt-2">
-                                    <input type="text" name="steps[0][desc]" placeholder="Description de l'activité..." class="bg-transparent text-gray-500 text-xs w-full focus:outline-none">
+                                    <input id="description_step_0"  type="text" name="steps[0][desc]" placeholder="Description de l'activité..." class="bg-transparent text-gray-500 text-xs w-full focus:outline-none">
                                 </div>
                             </div>
 
@@ -296,6 +292,7 @@ require_role("guide");
         }
 
         // 3. Dynamic Steps Logic
+        let steps =[];
         let stepCount = 1;
         function addStep() {
             const container = document.getElementById('stepsContainer');
@@ -307,25 +304,24 @@ require_role("guide");
                 <div class="flex gap-4">
                     <div class="flex-1">
                         <label class="text-[10px] uppercase text-gray-500 font-bold">Titre de l'étape</label>
-                        <input type="text" name="steps[${stepCount}][title]" placeholder="Nouvelle étape" class="bg-transparent border-b border-gray-700 w-full text-white text-sm py-1 focus:border-gold focus:outline-none">
-                    </div>
-                    <div class="w-32">
-                        <label class="text-[10px] uppercase text-gray-500 font-bold">Durée (min)</label>
-                        <input type="number" name="steps[${stepCount}][duration]" placeholder="0" class="bg-transparent border-b border-gray-700 w-full text-white text-sm py-1 focus:border-gold focus:outline-none">
+                        <input id="title_step_${stepCount}" type="text" name="steps[${stepCount}][title]" placeholder="Nouvelle étape" class="bg-transparent border-b border-gray-700 w-full text-white text-sm py-1 focus:border-gold focus:outline-none">
                     </div>
                 </div>
-                <div class="mt-2">
-                    <input type="text" name="steps[${stepCount}][desc]" placeholder="Description..." class="bg-transparent text-gray-500 text-xs w-full focus:outline-none">
+                <div class="mt-2"> 
+                    <input id="description_step_${stepCount}" type="text" name="steps[${stepCount}][desc]" placeholder="Description..." class="bg-transparent text-gray-500 text-xs w-full focus:outline-none">
                 </div>
             `;
             container.appendChild(newStep);
             stepCount++;
+
+            
         }
 
         // send creating 
 
         const submit_btn = document.getElementById("submit_btn");
         submit_btn.addEventListener("click",function(){
+
             let data = new FormData();
             data.append("image", imageValue);
             data.append("title", titleValue);
@@ -343,11 +339,32 @@ require_role("guide");
             })
             .then(response=>response.text())
             .then(data=>{
-                if(data == "visite added successfuly"){
+                if(data == "problem"){
                     window.location.href = "guide_dashboard?message=added";
             }
             else{
-                console.log(data);
+                for(let i = 0 ; i < stepCount ; i++){
+                    const title = document.getElementById(`title_step_${i}`)
+                    const description = document.getElementById(`description_step_${i}`);
+                    let stepdata = new FormData();
+                    stepdata.append("step_title",title.value);
+                    stepdata.append("step_description",description.value);
+                    stepdata.append("step_order",i);
+                    stepdata.append("tour_id",data);
+                    fetch("../../includes/guide/visite_action/add_tourSteps.php",{
+                        method:"POST",
+                        body:stepdata
+                    })
+                    .then(response=>response.text())
+                    .then(data=>{
+                        if(data == "problem"){
+                            console.log(data);
+                        }
+                        else{
+                            window.location.href = "guide_dashboard.php?message=done";
+                        }
+                    })
+                }
             }
            
         });
