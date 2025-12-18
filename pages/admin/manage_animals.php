@@ -98,13 +98,7 @@ require_role("admin");
                     <input type="text" id="searchInput" placeholder="Rechercher..." class="w-full bg-[#151515] border border-gray-700 text-sm rounded-lg pl-10 pr-4 py-2.5 focus:border-gold focus:outline-none text-gray-300">
                 </div>
                 <select id="habitatFilter" class="bg-[#151515] border border-gray-700 text-gray-300 text-sm rounded-lg px-4 py-2.5 focus:border-gold focus:outline-none">
-                    <option value="all">Tous les Habitats</option>
-                    <option value="1">Savane</option>
-                    <option value="2">Forêt tropicale</option>
-                    <option value="3">Désert</option>
-                    <option value="4">Zone polaire</option>
-                    <option value="5">Jungle</option>
-                    <option value="6">Rivière</option>
+                    <option value="all" selected>Tous les Habitats</option>
                 </select>
             </div>
 
@@ -117,7 +111,7 @@ require_role("admin");
                             <th class="px-6 py-4">Description</th>
                             <th class="px-6 py-4">Alimentation</th>
                             <th class="px-6 py-4">Pays</th>
-                            <th class="px-6 py-4">Espèce</th>
+                            <th class="px-6 py-4">Habitat</th>
                             <th class="px-6 py-4 text-right">Actions</th>
                         </tr>
                     </thead>
@@ -156,13 +150,8 @@ require_role("admin");
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Habitat</label>
-                        <select id="habitat" class="w-full bg-black border border-gray-700 rounded px-3 py-2 text-white text-sm focus:border-gold focus:outline-none">
-                            <option value="1">Savane</option>
-                            <option value="2">Forêt tropicale</option>
-                            <option value="3">Désert</option>
-                            <option value="4">Zone polaire</option>
-                            <option value="5">Jungle</option>
-                            <option value="6">Rivière</option>
+                        <select id="habitat_container" class="w-full bg-black border border-gray-700 rounded px-3 py-2 text-white text-sm focus:border-gold focus:outline-none">
+                            
                         </select>
                     </div>
                     <div>
@@ -195,158 +184,214 @@ require_role("admin");
     </div>
 
     <script>
-        const modal = document.getElementById('animalModal');
-        const modalTitle = document.getElementById('modalTitle');
-        const formAction = document.getElementById('formAction');
-        const animalId = document.getElementById('animalId');
+    const modal = document.getElementById('animalModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const formAction = document.getElementById('formAction');
+    const animalId = document.getElementById('animalId');
 
-        const nomInput = document.getElementById('nom');
-        const especeInput = document.getElementById('espece');
-        const paysInput = document.getElementById('pays');
-        const habitatInput = document.getElementById('habitat');
-        const descriptionInput = document.getElementById('description');
-        const alimentationInput = document.getElementById('alimentation');
-        const imageInput = document.getElementById('image');
+    const nomInput = document.getElementById('nom');
+    const especeInput = document.getElementById('espece');
+    const paysInput = document.getElementById('pays');
+    
+    const habitatInput = document.getElementById('habitat_container'); 
+    
+    const descriptionInput = document.getElementById('description');
+    const alimentationInput = document.getElementById('alimentation');
+    const imageInput = document.getElementById('image');
+    const habitatFilter = document.getElementById("habitatFilter");
 
-        document.getElementById('searchInput').addEventListener('input', function() {
-            let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll('#animals_container tr');
-            rows.forEach(row => {
-                let text = row.innerText.toLowerCase();
-                row.style.display = text.includes(filter) ? '' : 'none';
-            });
+    getAnimals();
+    getHabitats("filter"); 
+
+    document.getElementById('searchInput').addEventListener('input', function() {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll('#animals_container tr');
+        rows.forEach(row => {
+            let text = row.innerText.toLowerCase();
+            row.style.display = text.includes(filter) ? '' : 'none';
         });
+    });
 
-        document.getElementById('habitatFilter').addEventListener('change', function() {
-             console.log("Filter changed to: " + this.value);
-        });
+    document.getElementById('habitatFilter').addEventListener('change', function() {
+        console.log("Filter changed to: " + this.value);
+    });
 
-        function openModal(mode, data = null) {
-            modal.classList.remove('hidden');
+    function openModal(mode, data = null) {
+        modal.classList.remove('hidden');
+        
+        getHabitats("modal"); 
 
-            if (mode === 'edit' && data) {
-                modalTitle.innerText = "Modifier Animal";
-                formAction.value = "update";
-                animalId.value = data.id;
+        if (mode === 'edit' && data) {
+            modalTitle.innerText = "Modifier Animal";
+            formAction.value = "update";
+            animalId.value = data.id;
 
-                nomInput.value = data.name;
-                especeInput.value = data.species;
-                paysInput.value = data.country;
-                habitatInput.value = data.habitat;
-                descriptionInput.value = data.description;
-                alimentationInput.value = data.alimentation;
-                imageInput.value = data.image;
-            } else {
-                modalTitle.innerText = "Ajouter un Animal";
-                formAction.value = "add";
-                
-                nomInput.value = "";
-                especeInput.value = "";
-                paysInput.value = "";
-                habitatInput.value = "1";
-                descriptionInput.value = "";
-                alimentationInput.value = "";
-                imageInput.value = "";
-            }
-        }
-
-        function closeModal() {
-            modal.classList.add('hidden');
-        }
-
-        function saveAnimal() {
-            const formData = new FormData();
-            formData.append("nom", nomInput.value);
-            formData.append("espece", especeInput.value);
-            formData.append("pays", paysInput.value);
-            formData.append("habitat_id", habitatInput.value);
-            formData.append("description", descriptionInput.value);
-            formData.append("alimentation", alimentationInput.value);
-            formData.append("image", imageInput.value);
+            nomInput.value = data.name;
+            especeInput.value = data.species;
+            paysInput.value = data.country;
             
-            let url = "";
-            if(formAction.value === 'update'){
-                url = "../../includes/admin/animals_actions/edit_animal.php";
-                formData.append("id", animalId.value);
-            } else {
-                url = "../../includes/admin/animals_actions/process_animal.php";
-            }
+            habitatInput.value = data.habitat; 
+            
+            descriptionInput.value = data.description;
+            alimentationInput.value = data.alimentation;
+            imageInput.value = data.image;
+        } else {
+            modalTitle.innerText = "Ajouter un Animal";
+            formAction.value = "add";
+            
+            nomInput.value = "";
+            especeInput.value = "";
+            paysInput.value = "";
+            habitatInput.value = ""; 
+            descriptionInput.value = "";
+            alimentationInput.value = "";
+            imageInput.value = "";
+        }
+    }
 
-            fetch(url, {
+    function closeModal() {
+        modal.classList.add('hidden');
+    }
+
+    function saveAnimal() {
+        const formData = new FormData();
+        formData.append("nom", nomInput.value);
+        formData.append("espece", especeInput.value);
+        formData.append("pays", paysInput.value);
+        formData.append("habitat_id", habitatInput.value);
+        formData.append("description", descriptionInput.value);
+        formData.append("alimentation", alimentationInput.value);
+        formData.append("image", imageInput.value);
+        
+        let url = "";
+        if(formAction.value === 'update'){
+            url = "../../includes/admin/animals_actions/edit_animal.php";
+            formData.append("id", animalId.value);
+        } else {
+            url = "../../includes/admin/animals_actions/process_animal.php";
+        }
+
+        fetch(url, {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            closeModal();
+            getAnimals();
+        });
+    }
+
+    function deleteAnimal(id) {
+        if(confirm("Êtes-vous sûr de vouloir supprimer cet animal ?")) {
+            let data = new FormData();
+            data.append("id", id);
+            fetch("../../includes/admin/animals_actions/delete_animal.php", {
                 method: "POST",
-                body: formData
+                body: data
             })
             .then(response => response.text())
+            .then(() => getAnimals());
+        }
+    }
+
+    function getAnimals() {
+        const animals_container = document.getElementById("animals_container");
+        let data = new FormData();
+        data.append("animals", "");
+
+        fetch("../../includes/admin/animal_data.php", {
+                method: "POST",
+                body: data
+            })
+            .then(response => response.json())
             .then(data => {
-                closeModal();
-                getAnimals();
-            });
-        }
-        function deleteAnimal(id) {
-            if(confirm("Êtes-vous sûr de vouloir supprimer cet animal ?")) {
-                let data = new FormData();
-                data.append("id", id);
-                fetch("../../includes/admin/animals_actions/delete_animal.php", {
-                    method: "POST",
-                    body: data
+                animals_container.innerHTML = "";
+                data.forEach(function(e) {
+                    let name = "text_"+ e.id;
+
+                    const card = `  <tr class="hover:bg-white/5 transition">
+                        <td class="px-6 py-4">
+                            <img src="${e.image}" class="w-12 h-12 rounded-lg object-cover border border-gray-700">
+                        </td>
+                        <td class="px-6 py-4 font-bold text-white">${e.nom}</td>
+                        <td class="px-6 py-4 text-xs italic text-gray-500 truncate max-w-xs">${e.description_courte}</td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-1 rounded bg-gray-700 text-gray-300 text-xs font-bold">${e.alimentation}</span>
+                        </td>
+                        <td class="px-6 py-4">${e.pays_origin}</td>
+                        <td class="px-6 py-4" id="${name}">${loadHabitatName(e.habitat_id,name)}</td>
+
+                        <td class="px-6 py-4 text-right">
+                            <div class="flex justify-end gap-2">
+                                <button onclick='openModal("edit", {
+                                    id: ${e.id},
+                                    name: "${e.nom}",
+                                    species: "${e.espece}",
+                                    country: "${e.pays_origin}",
+                                    habitat: ${e.habitat_id},
+                                    alimentation: "${e.alimentation}",
+                                    description: "${e.description_courte}",
+                                    image: "${e.image}"
+                                })' class="w-8 h-8 rounded border border-gray-600 hover:border-gold hover:text-gold transition flex items-center justify-center">
+                                <i class="fa-solid fa-pen"></i>
+                                </button>
+
+                                <button onclick="deleteAnimal(${e.id})" class="w-8 h-8 rounded border border-gray-600 hover:border-red-500 hover:text-red-500 transition flex items-center justify-center">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>`
+                    animals_container.insertAdjacentHTML("afterbegin", card);
                 })
-                .then(response => response.text())
-                .then(() => getAnimals());
+            })
+    }
+
+    function getHabitats(target){
+        let data = new FormData();
+        data.append("habitat","");
+
+        fetch("../../includes/admin/habitat_data.php",{
+            method : "POST",
+            body : data
+        })
+        .then(response=>response.json())
+        .then(data=>{
+            let container;
+            
+            if(target === 'filter') {
+                container = document.getElementById("habitatFilter");
+                container.innerHTML = '<option value="all" selected>Tous les Habitats</option>';
+            } else {
+                container = document.getElementById("habitat_container");
+                container.innerHTML = '';
             }
-        }
+            
+            data.forEach(function(e){
+                const card = `<option value="${e.id}">${e.nom}</option>`
+                container.insertAdjacentHTML("beforeend", card);
+            })
+        });
+    }
 
-        getAnimals();
 
-        function getAnimals() {
-            const animals_container = document.getElementById("animals_container");
-            let data = new FormData();
-            data.append("animals", "");
+   function loadHabitatName(habitatId, elementId) {
+    let data = new FormData();
+    data.append("habitat_id", habitatId);
 
-            fetch("../../includes/admin/animal_data.php", {
-                    method: "POST",
-                    body: data
-                })
-                .then(response => response.json())
-                .then(data => {
-                    animals_container.innerHTML = "";
-                    data.forEach(function(e) {
-                        const card = `  <tr class="hover:bg-white/5 transition">
-                            <td class="px-6 py-4">
-                                <img src="${e.image}" class="w-12 h-12 rounded-lg object-cover border border-gray-700">
-                            </td>
-                            <td class="px-6 py-4 font-bold text-white">${e.nom}</td>
-                            <td class="px-6 py-4 text-xs italic text-gray-500 truncate max-w-xs">${e.description_courte}</td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 py-1 rounded bg-gray-700 text-gray-300 text-xs font-bold">${e.alimentation}</span>
-                            </td>
-                            <td class="px-6 py-4">${e.pays_origin}</td>
-                            <td class="px-6 py-4">${e.espece}</td>
-
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex justify-end gap-2">
-                                    <button onclick='openModal("edit", {
-                                        id: ${e.id},
-                                        name: "${e.nom}",
-                                        species: "${e.espece}",
-                                        country: "${e.pays_origin}",
-                                        habitat: ${e.habitat_id},
-                                        alimentation: "${e.alimentation}",
-                                        description: "${e.description_courte}",
-                                        image: "${e.image}"
-                                    })' class="w-8 h-8 rounded border border-gray-600 hover:border-gold hover:text-gold transition flex items-center justify-center">
-                                    <i class="fa-solid fa-pen"></i>
-                                    </button>
-
-                                    <button onclick="deleteAnimal(${e.id})" class="w-8 h-8 rounded border border-gray-600 hover:border-red-500 hover:text-red-500 transition flex items-center justify-center">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>`
-                        animals_container.insertAdjacentHTML("afterbegin", card);
-                    })
-                })
-        }
-    </script>
+    fetch("../../includes/admin/habitat_actions/gethabitatName.php", {
+            method: "POST",
+            body: data
+        })
+        .then(response => response.text())
+        .then(name => {
+            let cell = document.getElementById(elementId);
+            if (cell) {
+                cell.innerText = name;
+            }
+        });
+}
+</script>
 </body>
 </html>
