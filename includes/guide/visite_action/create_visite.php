@@ -27,9 +27,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     try{
         mysqli_stmt_execute($stmt);
-        echo "visite added successfuly";
+        echo mysqli_insert_id($conn);
     }catch(mysqli_sql_exception){
-       echo "problem happend";
+       echo "problem";
     }   
  
 }
