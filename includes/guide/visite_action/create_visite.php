@@ -16,14 +16,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $status = "open";
 
     $query = "INSERT INTO tours(titre,description,date_heure_debut,duree_minutes,prix,langue,capacity_max
-    ,guide_id,status) VALUES(?,?,?,?,?,?,?,?,?)";
+    ,guide_id,status,tour_image) VALUES(?,?,?,?,?,?,?,?,?,?)";
     
     $stmt = mysqli_prepare($conn,$query);
        if($stmt === false){
         die("Error prepare statement".mysqli_error($conn));
     }
 
-    mysqli_stmt_bind_param($stmt,"sssidsiis",$titre,$description,$date_heure,$duree,$prix,$langue,$capacite,$guide_id,$status);
+    mysqli_stmt_bind_param($stmt,"sssidsiis",$titre,$description,$date_heure,$duree,$prix,$langue,$capacite,$guide_id,$status,$image);
 
     try{
         mysqli_stmt_execute($stmt);
