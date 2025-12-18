@@ -206,11 +206,11 @@ require_role("guide");
                         <div class="flex justify-between items-start mb-4">
                             <div>
                                 <span class="bg-gray-800 text-gray-400 border border-gray-700 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block">Terminé</span>
-                                <h3 class="font-serif text-xl text-white font-bold">Rencontre VIP : Asaad</h3>
-                                <p class="text-sm text-gray-500 mt-1"><i class="fa-regular fa-calendar mr-2 text-gray-500"></i> 10 Déc. 2025</p>
+                                <h3 class="font-serif text-xl text-white font-bold">${e.titre}</h3>
+                                <p class="text-sm text-gray-500 mt-1"><i class="fa-regular fa-calendar mr-2 text-gray-500"></i>${e.date_heure_debut}</p>
                             </div>
                             <div class="text-right">
-                                <span class="block text-2xl font-bold text-gray-400">800 <span class="text-xs font-normal text-gray-600">DH</span></span>
+                                <span class="block text-2xl font-bold text-gray-400">${e.prix} <span class="text-xs font-normal text-gray-600">DH</span></span>
                             </div>
                         </div>
 
