@@ -23,7 +23,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         die("Error prepare statement".mysqli_error($conn));
     }
 
-    mysqli_stmt_bind_param($stmt,"sssiisiis",$titre,$description,$date_heure,$duree,$prix,$langue,$capacite,$guide_id,$status);
+    mysqli_stmt_bind_param($stmt,"sssidsiis",$titre,$description,$date_heure,$duree,$prix,$langue,$capacite,$guide_id,$status);
 
     try{
         mysqli_stmt_execute($stmt);
