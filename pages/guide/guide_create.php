@@ -98,64 +98,75 @@ require_role("guide");
         <div class="flex-1 overflow-y-auto p-8 bg-[#0a0a0a]">
             
             <form action="process_tour.php" method="POST" enctype="multipart/form-data" class="max-w-4xl mx-auto">
-                
-                <div id="step1" class="fade-in space-y-8">
-                    
-                    <div class="bg-dark-panel border border-white/10 rounded-xl p-8">
-                        <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Média</h3>
-                        <div class="flex items-start gap-6">
-                            <div class="w-32 h-32 bg-black border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center relative group">
-                                <img id="imgPreview" class="w-full h-full object-cover hidden">
-                                <i id="imgIcon" class="fa-solid fa-image text-2xl text-gray-600"></i>
-                            </div>
-                            <div class="flex-1">
-                                <label class="block text-sm text-gray-400 mb-2">Image de couverture</label>
-                                <input type="file" name="cover_image" onchange="previewImage(this)" class="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-gold file:text-black hover:file:bg-white cursor-pointer">
-                                <p class="text-xs text-gray-600 mt-2">Format: JPG, PNG. Max: 5MB.</p>
-                            </div>
-                        </div>
-                    </div>
+<div id="step1" class="fade-in space-y-8">
 
-                    <div class="bg-dark-panel border border-white/10 rounded-xl p-8">
-                        <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Détails Principaux</h3>
-                        
-                        <div class="grid grid-cols-1 gap-6 mb-6">
-                            <div>
-                                <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Titre de la visite</label>
-                                <input type="text" name="title" required placeholder="Ex: Safari Nocturne" class="dash-input w-full rounded-lg px-4 py-3 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Description</label>
-                                <textarea name="description" rows="3" class="dash-input w-full rounded-lg px-4 py-3 text-sm"></textarea>
-                            </div>
-                        </div>
+    <div class="bg-dark-panel border border-white/10 rounded-xl p-8">
+        <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Média</h3>
+        <div class="flex items-start gap-6">
+            <div class="w-32 h-32 bg-black border border-gray-700 rounded-lg overflow-hidden flex items-center justify-center shrink-0">
+                <i class="fa-solid fa-link text-2xl text-gray-600"></i>
+            </div>
+            <div class="flex-1">
+                <label class="block text-xs uppercase text-gray-500 font-bold mb-1">URL de l'image</label>
+                <input type="text" name="image" placeholder="https://example.com/image.jpg" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white placeholder-gray-600 focus:border-gold focus:outline-none">
+                <p class="text-xs text-gray-600 mt-2">Collez le lien direct vers l'image de couverture.</p>
+            </div>
+        </div>
+    </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Date & Heure</label>
-                                <input type="datetime-local" name="date" required class="dash-input w-full rounded-lg px-4 py-3 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Durée (Minutes)</label>
-                                <input type="number" name="duration" placeholder="90" class="dash-input w-full rounded-lg px-4 py-3 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Prix (DH)</label>
-                                <input type="number" name="price" placeholder="150" class="dash-input w-full rounded-lg px-4 py-3 text-sm">
-                            </div>
-                            <div>
-                                <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Capacité Max</label>
-                                <input type="number" name="capacity" placeholder="20" class="dash-input w-full rounded-lg px-4 py-3 text-sm">
-                            </div>
-                        </div>
-                    </div>
+    <div class="bg-dark-panel border border-white/10 rounded-xl p-8">
+        <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Détails Principaux</h3>
+        
+        <div class="grid grid-cols-1 gap-6 mb-6">
+            <div>
+                <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Titre de la visite</label>
+                <input type="text" name="titre" required placeholder="Ex: Safari Nocturne" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none">
+            </div>
+            <div>
+                <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Description</label>
+                <textarea name="description" rows="3" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none"></textarea>
+            </div>
+        </div>
 
-                    <div class="flex justify-end">
-                        <button type="button" onclick="goToStep(2)" class="bg-gold text-black font-bold px-8 py-3 rounded shadow hover:bg-white transition flex items-center gap-2">
-                            Suivant : Définir le Parcours <i class="fa-solid fa-arrow-right"></i>
-                        </button>
-                    </div>
-                </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Date & Heure Début</label>
+                <input type="datetime-local" name="date_heure_debut" required class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none">
+            </div>
+            
+            <div>
+                <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Durée (Minutes)</label>
+                <input type="number" name="duree_minutes" placeholder="90" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none">
+            </div>
+            
+            <div>
+                <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Prix (DH)</label>
+                <input type="number" step="0.01" name="prix" placeholder="150" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none">
+            </div>
+
+            <div>
+                <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Langue</label>
+                <select name="langue" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none">
+                    <option value="Français">Français</option>
+                    <option value="Anglais">Anglais</option>
+                    <option value="Arabe">Arabe</option>
+                    <option value="Espagnol">Espagnol</option>
+                </select>
+            </div>
+            
+            <div class="md:col-span-2">
+                <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Capacité Max</label>
+                <input type="number" name="capacity_max" placeholder="20" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none">
+            </div>
+        </div>
+    </div>
+
+    <div class="flex justify-end">
+        <button type="button" onclick="goToStep(2)" class="bg-gold text-black font-bold px-8 py-3 rounded shadow hover:bg-white transition flex items-center gap-2">
+            Suivant : Définir le Parcours <i class="fa-solid fa-arrow-right"></i>
+        </button>
+    </div>
+</div>
 
                 <div id="step2" class="fade-in hidden space-y-8">
                     
