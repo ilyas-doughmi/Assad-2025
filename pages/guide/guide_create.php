@@ -97,7 +97,6 @@ require_role("guide");
 
         <div class="flex-1 overflow-y-auto p-8 bg-[#0a0a0a]">
             
-            <form action="process_tour.php" method="POST" enctype="multipart/form-data" class="max-w-4xl mx-auto">
 <div id="step1" class="fade-in space-y-8">
 
     <div class="bg-dark-panel border border-white/10 rounded-xl p-8">
@@ -108,7 +107,7 @@ require_role("guide");
             </div>
             <div class="flex-1">
                 <label class="block text-xs uppercase text-gray-500 font-bold mb-1">URL de l'image</label>
-                <input type="text" name="image" placeholder="https://example.com/image.jpg" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white placeholder-gray-600 focus:border-gold focus:outline-none">
+                <input id="input_image" type="text" name="image" placeholder="https://example.com/image.jpg" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white placeholder-gray-600 focus:border-gold focus:outline-none">
                 <p class="text-xs text-gray-600 mt-2">Collez le lien direct vers l'image de couverture.</p>
             </div>
         </div>
@@ -119,34 +118,34 @@ require_role("guide");
         
         <div class="grid grid-cols-1 gap-6 mb-6">
             <div>
-                <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Titre de la visite</label>
-                <input type="text" name="titre" required placeholder="Ex: Safari Nocturne" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none">
+                <label  class="block text-xs uppercase text-gray-500 font-bold mb-1">Titre de la visite</label>
+                <input id="input_title" type="text" name="titre" required placeholder="Ex: Safari Nocturne" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none">
             </div>
             <div>
                 <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Description</label>
-                <textarea name="description" rows="3" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none"></textarea>
+                <textarea id="input_description" name="description" rows="3" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none"></textarea>
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
                 <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Date & Heure Début</label>
-                <input type="datetime-local" name="date_heure_debut" required class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none">
+                <input id="input_date" type="datetime-local" name="date_heure_debut" required class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none">
             </div>
             
             <div>
                 <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Durée (Minutes)</label>
-                <input type="number" name="duree_minutes" placeholder="90" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none">
+                <input id="input_duree" type="number" name="duree_minutes" placeholder="90" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none">
             </div>
             
             <div>
                 <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Prix (DH)</label>
-                <input type="number" step="0.01" name="prix" placeholder="150" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none">
+                <input id="input_prix" type="number" step="0.01" name="prix" placeholder="150" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none">
             </div>
 
             <div>
                 <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Langue</label>
-                <select name="langue" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none">
+                <select id="input_langue" name="langue" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none">
                     <option value="Français">Français</option>
                     <option value="Anglais">Anglais</option>
                     <option value="Arabe">Arabe</option>
@@ -156,7 +155,7 @@ require_role("guide");
             
             <div class="md:col-span-2">
                 <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Capacité Max</label>
-                <input type="number" name="capacity_max" placeholder="20" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none">
+                <input id="input_capacity" type="number" name="capacity_max" placeholder="20" class="dash-input w-full rounded-lg px-4 py-3 text-sm bg-black border border-gray-700 text-white focus:border-gold focus:outline-none">
             </div>
         </div>
     </div>
@@ -207,20 +206,51 @@ require_role("guide");
                         <button type="button" onclick="goToStep(1)" class="text-gray-500 hover:text-white transition flex items-center gap-2">
                             <i class="fa-solid fa-arrow-left"></i> Retour
                         </button>
-                        <button type="submit" class="bg-green-600 text-white font-bold px-8 py-3 rounded shadow hover:bg-green-500 transition flex items-center gap-2">
+                        <button id="submit_btn" type="submit" class="bg-green-600 text-white font-bold px-8 py-3 rounded shadow hover:bg-green-500 transition flex items-center gap-2">
                             <i class="fa-solid fa-check"></i> Finaliser et Publier
                         </button>
                     </div>
                 </div>
 
-            </form>
         </div>
     </main>
 
     <script>
+
+        const input_image = document.getElementById("input_image");
+        const input_title = document.getElementById("input_title");
+        const input_description = document.getElementById("input_description");
+        const input_date = document.getElementById("input_date");
+        const input_duree = document.getElementById("input_duree"); 
+        const input_prix = document.getElementById("input_prix");
+        const input_langue = document.getElementById("input_langue");
+        const input_capacity = document.getElementById("input_capacity");
+
+        let imageValue = "";
+        let titleValue = "";
+        let descriptionValue = "";
+        let dateValue = "";
+        let dureeValue = "";
+        let prixValue = "";
+        let langueValue = "";
+        let capacityValue = "";
+
         // 1. Wizard Logic
         function goToStep(stepNumber) {
-            const step1 = document.getElementById('step1');
+            imageValue = input_image.value;
+            titleValue = input_title.value;
+            descriptionValue = input_description.value;
+            dateValue = input_date.value;
+            dureeValue = input_duree.value;
+            prixValue = input_prix.value;
+            langueValue = input_langue.value;
+            capacityValue = input_capacity.value;
+            if (!imageValue || !titleValue || !descriptionValue || !dateValue || !dureeValue || !prixValue || !langueValue || !capacityValue) {
+                alert("Please fill in all fields before continuing.");
+                return;
+            }
+            else{
+                            const step1 = document.getElementById('step1');
             const step2 = document.getElementById('step2');
             const ind1 = document.getElementById('ind-step1');
             const ind2 = document.getElementById('ind-step2');
@@ -245,6 +275,7 @@ require_role("guide");
                 
                 ind1.classList.remove('text-gray-600');
                 ind1.classList.add('text-gold', 'font-bold');
+            }
             }
         }
 
@@ -290,6 +321,37 @@ require_role("guide");
             container.appendChild(newStep);
             stepCount++;
         }
+
+        // send creating 
+
+        const submit_btn = document.getElementById("submit_btn");
+        submit_btn.addEventListener("click",function(){
+            let data = new FormData();
+            data.append("image", imageValue);
+            data.append("title", titleValue);
+            data.append("description", descriptionValue);
+            data.append("date", dateValue);
+            data.append("duree", dureeValue);
+            data.append("prix", prixValue);
+            data.append("langue", langueValue);
+            data.append("capacity", capacityValue);
+            data.append("guide_id",<?= $_SESSION["id"] ?>)
+
+            fetch("../../includes/guide/visite_action/create_visite.php",{
+                method:"POST",
+                body:data
+            })
+            .then(response=>response.text())
+            .then(data=>{
+                if(data == "visite added successfuly"){
+                    window.location.href = "guide_dashboard?message=added";
+            }
+            else{
+                console.log(data);
+            }
+           
+        });
+    })
     </script>
 </body>
 </html>
