@@ -69,21 +69,12 @@ $guide = getGuideName($guide_id);
 
             <div>
                 <h2 class="font-serif text-2xl text-white mb-6">Votre Parcours</h2>
-                <div class="border-l-2 border-gray-800 ml-3 space-y-8">           
-
+                <div id="steps_container" class="border-l-2 border-gray-800 ml-3 space-y-8">           
+        
                 </div>
             </div>
 
-            <div class="pt-8 border-t border-white/10">
-                <h2 class="font-serif text-2xl text-white mb-6">Avis des visiteurs</h2>
-                <div class="bg-white/5 p-4 rounded-lg mb-4">
-                    <div class="flex justify-between mb-2">
-                        <span class="font-bold text-gold">Sophie L.</span>
-                        <div class="text-yellow-500 text-xs"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-                    </div>
-                    <p class="text-gray-400 text-sm">"Incroyable de voir Asaad d'aussi près !"</p>
-                </div>
-            </div>
+        
         </div>
 
         <div class="relative">
@@ -119,8 +110,40 @@ $guide = getGuideName($guide_id);
     </div>
 
     <script>
-        function fetchSteps(<?= $tour_id ?>){
+        fetchSteps(<?= $tour_id ?>);
+        function fetchSteps(id){
+            const steps_container = document.getElementById("steps_container");
+            let firstPass = false;
+            let card;
+            let data = new FormData();
+            data.append("show_steps",id);
+            fetch("../includes/guide/visite_action/steps_visite.php",{
+                method: "POST",
+                body: data 
+            })
+            .then(response=>response.json())
+            .then(data=>{
+                data.forEach(function(e){
+                    if(!firstPass){
+                        card = `<div class="relative pl-8">
+                        <span class="absolute -left-[9px] top-0 w-5 h-5 rounded-full bg-gold border-4 border-dark"></span>
+                        <h3 class="text-white font-bold text-lg">${e.titre_etape}</h3>
+                        <p class="text-gray-500 text-sm">${e.description_etape}</p>
+                    </div>`
+                    firstPass = true;
+                    }else{
+                        card = `       <div class="relative pl-8">
+                        <span class="absolute -left-[9px] top-0 w-5 h-5 rounded-full bg-gray-700 border-4 border-dark"></span>
+                        <h3 class="text-white font-bold text-lg">${e.titre_etape}</h3>
+                        <p class="text-gray-500 text-sm">${e.description_etape}</p>
+                    </div>`
+                    }
 
+                    steps_container.insertAdjacentHTML("beforeend",card);
+
+                })
+
+            })
         }
     </script>
 </body>
