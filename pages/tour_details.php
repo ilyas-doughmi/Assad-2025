@@ -84,7 +84,6 @@ $guide = getGuideName($guide_id);
                     <span class="text-3xl font-serif font-bold text-gold">150 DH</span>
                 </div>
                 
-                <form action="process_booking.php" method="POST">
                     <input type="hidden" name="tour_id" value="1">
                     
                     <div class="mb-4">
@@ -99,11 +98,10 @@ $guide = getGuideName($guide_id);
                         <input type="number" name="nb_people" value="1" min="1" max="10" class="w-full bg-black border border-gray-700 rounded px-4 py-3 text-white focus:border-gold outline-none">
                     </div>
 
-                    <button type="submit" class="w-full bg-gold text-black font-bold py-4 rounded hover:bg-white transition uppercase tracking-widest text-sm">
+                    <button onclick="reserve(<?= $tour_info['id'] ?>)" type="submit" class="w-full bg-gold text-black font-bold py-4 rounded hover:bg-white transition uppercase tracking-widest text-sm">
                         Réserver maintenant
                     </button>
                     <p class="text-center text-xs text-gray-500 mt-4"><i class="fa-solid fa-lock mr-1"></i> Paiement sécurisé</p>
-                </form>
             </div>
         </div>
 
@@ -144,6 +142,20 @@ $guide = getGuideName($guide_id);
                 })
 
             })
+
+             window.reserve = function(tour_id){
+                let data = new FormData();
+                data.append("reserve",tour_id);
+
+                fetch("../includes/guide/visite_action/reserve_tour.php",{
+                    method : "POST",
+                    body : data
+                })
+                .then(response=>response.text())
+                .then(data=>{
+                    if(data == "")
+                })
+            }
         }
     </script>
 </body>
