@@ -44,6 +44,7 @@ CREATE TABLE Tours (
     capacity_max INT,
     status VARCHAR(100),
     guide_id INT,
+    tour_image VARCHAR(255),
 
     FOREIGN KEY (guide_id) REFERENCES users(id)
         ON DELETE SET NULL
