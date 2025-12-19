@@ -1,3 +1,22 @@
+<?php 
+if(isset($_GET["id"])){
+    $tour_id = $_GET["id"];
+}
+else{
+    header("location: tours.php?message=choose");
+}
+
+include_once("../includes/guide/visite_data.php");
+
+
+
+$tour_info = getTourInfo($tour_id);
+$guide_id = $tour_info["guide_id"];
+$guide = getGuideName($guide_id);
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr" class="dark">
 <head>
@@ -25,15 +44,14 @@
         <div class="w-20"></div> </nav>
 
     <div class="h-[50vh] relative">
-        <img src="https://images.unsplash.com/photo-1549366021-9f761d450615?q=80&w=1935" class="w-full h-full object-cover opacity-60">
+        <img src="<?=  $tour_info["tour_image"] ?>" class="w-full h-full object-cover opacity-60">
         <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent"></div>
         <div class="absolute bottom-0 left-0 p-8 max-w-7xl mx-auto w-full">
-            <span class="bg-gold text-black text-xs font-bold px-3 py-1 rounded uppercase tracking-widest mb-3 inline-block">Safari</span>
-            <h1 class="font-serif text-5xl font-bold text-white mb-2">Safari Nocturne : Les Félins</h1>
+            <h1 class="font-serif text-5xl font-bold text-white mb-2"><?= $tour_info["titre"] ?></h1>
             <div class="flex gap-6 text-sm text-gray-300">
-                <span><i class="fa-regular fa-clock text-gold mr-2"></i> 2h00</span>
-                <span><i class="fa-solid fa-language text-gold mr-2"></i> Français</span>
-                <span><i class="fa-solid fa-user-tie text-gold mr-2"></i> Guide: Ahmed B.</span>
+                <span><i class="fa-regular fa-clock text-gold mr-2"></i> <?= $tour_info["duree_minutes"] ?> Minutes</span>
+                <span><i class="fa-solid fa-language text-gold mr-2"></i><?= $tour_info["langue"] ?></span>
+                <span><i class="fa-solid fa-user-tie text-gold mr-2"></i> Guide: <?= $guide["full_name"] ?></span>
             </div>
         </div>
     </div>
@@ -45,32 +63,13 @@
             <div>
                 <h2 class="font-serif text-2xl text-white mb-4">À propos de cette expérience</h2>
                 <p class="text-gray-400 leading-relaxed">
-                    Découvrez la vie secrète des grands prédateurs une fois le soleil couché. 
-                    Ce parcours exclusif vous emmène au plus près des lions de l'Atlas et des léopards dans une ambiance mystérieuse et sécurisée.
+                    <?= $tour_info["description"] ?>
                 </p>
             </div>
 
             <div>
                 <h2 class="font-serif text-2xl text-white mb-6">Votre Parcours</h2>
-                <div class="border-l-2 border-gray-800 ml-3 space-y-8">
-                    
-                    <div class="relative pl-8">
-                        <span class="absolute -left-[9px] top-0 w-5 h-5 rounded-full bg-gold border-4 border-dark"></span>
-                        <h3 class="text-white font-bold text-lg">Point de Rencontre</h3>
-                        <p class="text-gray-500 text-sm">Briefing de sécurité et équipement.</p>
-                    </div>
-
-                    <div class="relative pl-8">
-                        <span class="absolute -left-[9px] top-0 w-5 h-5 rounded-full bg-gray-700 border-4 border-dark"></span>
-                        <h3 class="text-white font-bold text-lg">Territoire des Lions</h3>
-                        <p class="text-gray-500 text-sm">Observation silencieuse du repas (30 min).</p>
-                    </div>
-
-                    <div class="relative pl-8">
-                        <span class="absolute -left-[9px] top-0 w-5 h-5 rounded-full bg-gray-700 border-4 border-dark"></span>
-                        <h3 class="text-white font-bold text-lg">Fin du parcours</h3>
-                        <p class="text-gray-500 text-sm">Retour au lodge et questions/réponses.</p>
-                    </div>
+                <div class="border-l-2 border-gray-800 ml-3 space-y-8">           
 
                 </div>
             </div>
@@ -100,7 +99,7 @@
                     <div class="mb-4">
                         <label class="block text-xs uppercase text-gray-500 font-bold mb-2">Date</label>
                         <div class="w-full bg-black border border-gray-700 rounded px-4 py-3 text-white text-sm">
-                            20 Décembre 2025 à 21:00
+                            <?= $tour_info["date_heure_debut"] ?>
                         </div>
                     </div>
 
@@ -118,5 +117,11 @@
         </div>
 
     </div>
+
+    <script>
+        function fetchSteps(<?= $tour_id ?>){
+
+        }
+    </script>
 </body>
 </html>
