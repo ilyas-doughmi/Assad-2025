@@ -1,19 +1,20 @@
-<?php 
+<?php
 require_once("../../includes/auth/guard.php");
 require_role("admin");
 
 ?>
 <!DOCTYPE html>
 <html lang="fr" class="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion Habitats | Admin ASSAD</title>
-    
+
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script>
@@ -34,6 +35,7 @@ require_role("admin");
         }
     </script>
 </head>
+
 <body class="bg-dark text-gray-100 font-sans h-screen flex overflow-hidden">
 
     <aside class="w-64 bg-black border-r border-white/10 hidden md:flex flex-col z-20">
@@ -48,7 +50,7 @@ require_role("admin");
                 <i class="fa-solid fa-chart-line w-6"></i>
                 <span class="text-sm font-medium">Statistiques</span>
             </a>
-            
+
             <p class="px-8 text-xs font-bold text-gray-500 uppercase tracking-widest mb-3 mt-6">Gestion</p>
             <a href="manage_users.php" class="flex items-center px-8 py-3 text-gray-400 hover:text-white hover:bg-white/5 transition">
                 <i class="fa-solid fa-users w-6"></i>
@@ -67,7 +69,7 @@ require_role("admin");
                 <span class="text-sm font-medium">Visites Guidées</span>
             </a>
         </nav>
-     <div class="p-6 border-t border-white/5 bg-black">
+        <div class="p-6 border-t border-white/5 bg-black">
             <div class="flex items-center gap-3">
                 <img src="https://ui-avatars.com/api/?name=Super+Admin&background=C6A87C&color=000" class="w-10 h-10 rounded-full border border-gold">
                 <div>
@@ -76,20 +78,20 @@ require_role("admin");
                 </div>
             </div>
         </div>
-</aside>
+    </aside>
 
     <main class="flex-1 flex flex-col h-screen overflow-hidden relative">
-        
+
         <header class="h-20 bg-[#0a0a0a] border-b border-white/5 flex items-center justify-between px-8">
             <h1 class="font-serif text-2xl text-white font-bold">Gestion des Habitats</h1>
-            
+
             <button onclick="openModal('add')" class="bg-gold text-black font-bold px-4 py-2 rounded shadow hover:bg-white transition flex items-center gap-2 text-sm">
                 <i class="fa-solid fa-plus"></i> Nouvel Habitat
             </button>
         </header>
 
         <div class="flex-1 overflow-y-auto p-8 bg-[#0a0a0a]">
-            
+
             <div class="bg-dark-card border border-white/5 rounded-xl overflow-hidden shadow-lg">
                 <table class="w-full text-left text-sm text-gray-400">
                     <thead class="bg-black text-gray-500 uppercase font-bold text-xs">
@@ -101,7 +103,7 @@ require_role("admin");
                         </tr>
                     </thead>
                     <tbody id="h_container" class="divide-y divide-white/5">
-                        
+
 
 
 
@@ -113,14 +115,14 @@ require_role("admin");
 
     <div id="habitatModal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-[#111] w-full max-w-lg rounded-xl border border-white/10 shadow-2xl p-8 relative animate-fade-in-up">
-            
+
             <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-white">
                 <i class="fa-solid fa-xmark text-xl"></i>
             </button>
-            
+
             <h2 id="modalTitle" class="font-serif text-2xl text-white mb-6">Ajouter un Habitat</h2>
-            
-            <form action="process_habitat.php" method="POST" enctype="multipart/form-data" class="space-y-4">
+
+            <form action="../../includes/admin/habitat_actions/process_habitat.php" method="POST"  class="space-y-4">
                 <input type="hidden" name="id" id="habitatId">
                 <input type="hidden" name="action" id="formAction" value="add">
 
@@ -157,10 +159,10 @@ require_role("admin");
 
                 <div>
                     <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Image de couverture</label>
-                    <div class="relative border border-gray-700 border-dashed rounded-lg p-4 hover:border-gold transition group text-center cursor-pointer">
-                        <input type="file" name="image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                        <i class="fa-solid fa-image text-2xl text-gray-500 group-hover:text-gold mb-2"></i>
-                        <p class="text-xs text-gray-400">Cliquez pour téléverser (JPG, PNG)</p>
+                    <div>
+                        <label class="block text-xs uppercase text-gray-500 font-bold mb-1">Lien de l'image (URL)</label>
+                        <input type="text" name="image" id="imageInput" placeholder="https://exemple.com/mon-image.jpg" required
+                            class="w-full bg-black border border-gray-700 rounded px-3 py-2 text-white text-sm focus:border-gold focus:outline-none">
                     </div>
                 </div>
 
@@ -177,7 +179,7 @@ require_role("admin");
         const modalTitle = document.getElementById('modalTitle');
         const formAction = document.getElementById('formAction');
         const habitatId = document.getElementById('habitatId');
-        
+
         const nomInput = document.getElementById('nom');
         const descInput = document.getElementById('desc');
         const climateInput = document.getElementById('climate');
@@ -185,12 +187,12 @@ require_role("admin");
 
         function openModal(mode, data = null) {
             modal.classList.remove('hidden');
-            
+
             if (mode === 'edit' && data) {
                 modalTitle.innerText = "Modifier Habitat";
                 formAction.value = "update";
                 habitatId.value = data.id;
-                
+
                 // Pre-fill
                 nomInput.value = data.name;
                 descInput.value = data.desc;
@@ -209,24 +211,24 @@ require_role("admin");
         function closeModal() {
             modal.classList.add('hidden');
         }
-getHabitats();
+        getHabitats();
 
-        function getHabitats(){
+        function getHabitats() {
             const h_container = document.getElementById("h_container");
             let data = new FormData();
 
-            data.append("habitat","");
+            data.append("habitat", "");
 
-            fetch("../../includes/admin/habitat_data.php",{
-                method : "POST",
-                body : data
-            })
+            fetch("../../includes/admin/habitat_data.php", {
+                    method: "POST",
+                    body: data
+                })
 
-            .then(response=>response.json())
-            .then(data=>{
-                           data.forEach(function(e){
+                .then(response => response.json())
+                .then(data => {
+                        data.forEach(function(e) {
                             console.log(e);
-                const card = `                        <tr class="hover:bg-white/5 transition">
+                            const card = `                        <tr class="hover:bg-white/5 transition">
                             <td class="px-6 py-4">
                                 <img src="${e.image}" class="w-16 h-10 rounded-md object-cover border border-gray-700">
                             </td>
@@ -244,12 +246,13 @@ getHabitats();
                             </td>
                         </tr>`
 
-                        h_container.insertAdjacentHTML("afterbegin",card);
-            })
-            }
- 
-        )
+                            h_container.insertAdjacentHTML("afterbegin", card);
+                        })
+                    }
+
+                )
         }
     </script>
 </body>
+
 </html>
