@@ -162,47 +162,7 @@ require_role("admin");
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 
-                <div class="lg:col-span-2 bg-dark-card border border-white/5 rounded-xl p-8 shadow-lg">
-                    <div class="flex justify-between items-center mb-8">
-                        <h3 class="font-serif text-xl text-white font-bold">Réservations par Mois</h3>
-                        <select class="bg-black border border-white/10 text-xs text-gray-400 rounded px-2 py-1">
-                            <option>2025</option>
-                        </select>
-                    </div>
-
-                    <div class="flex items-end justify-between h-64 gap-2 text-center text-xs text-gray-500">
-                        <div class="w-full flex flex-col gap-2 items-center group">
-                            <div class="w-full bg-gray-800 rounded-t h-20 group-hover:bg-gold transition-colors chart-bar"></div>
-                            <span>Juin</span>
-                        </div>
-                        <div class="w-full flex flex-col gap-2 items-center group">
-                            <div class="w-full bg-gray-800 rounded-t h-32 group-hover:bg-gold transition-colors chart-bar"></div>
-                            <span>Juil</span>
-                        </div>
-                        <div class="w-full flex flex-col gap-2 items-center group">
-                            <div class="w-full bg-gray-800 rounded-t h-24 group-hover:bg-gold transition-colors chart-bar"></div>
-                            <span>Août</span>
-                        </div>
-                        <div class="w-full flex flex-col gap-2 items-center group">
-                            <div class="w-full bg-gray-800 rounded-t h-40 group-hover:bg-gold transition-colors chart-bar"></div>
-                            <span>Sep</span>
-                        </div>
-                        <div class="w-full flex flex-col gap-2 items-center group">
-                            <div class="w-full bg-gray-800 rounded-t h-48 group-hover:bg-gold transition-colors chart-bar"></div>
-                            <span>Oct</span>
-                        </div>
-                        <div class="w-full flex flex-col gap-2 items-center group">
-                            <div class="w-full bg-gray-800 rounded-t h-56 group-hover:bg-gold transition-colors chart-bar"></div>
-                            <span>Nov</span>
-                        </div>
-                        <div class="w-full flex flex-col gap-2 items-center group">
-                            <div class="w-full bg-gold/80 rounded-t h-full shadow-[0_0_15px_rgba(198,168,124,0.5)] chart-bar relative">
-                                <span class="absolute -top-6 left-1/2 transform -translate-x-1/2 text-white font-bold">CAN</span>
-                            </div>
-                            <span class="text-white font-bold">Déc</span>
-                        </div>
-                    </div>
-                </div>
+         
 
                 <div class="bg-dark-card border border-white/5 rounded-xl p-0 shadow-lg flex flex-col">
                     <div class="p-6 border-b border-white/5 flex justify-between items-center">
