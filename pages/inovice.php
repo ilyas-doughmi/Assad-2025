@@ -1,12 +1,26 @@
+<?php
+include(dirname(__DIR__).'/includes/db.php');
+session_start();
+if(!isset($_SESSION['id'])){
+    header('Location: /assad-2025/login.php');
+    exit;
+}
+$user_id = $_SESSION['id'];
+$tour_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$tour = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM tours WHERE id = $tour_id"));
+$user = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM users WHERE id = $user_id"));
+$qty = 1;
+$prix = $tour['prix'];
+$total = $prix * $qty;
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Facture #INV-2025-001</title>
+    <title>Facture #INV-<?= $tour_id ?></title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Outfit:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        /* Forces white background when printing */
         @media print { 
             @page { margin: 0; }
             body { background: white; -webkit-print-color-adjust: exact; }
@@ -17,7 +31,6 @@
     </style>
 </head>
 <body class="bg-gray-800 flex flex-col items-center min-h-screen p-8">
-
     <div class="no-print w-full max-w-2xl mb-4 flex justify-between">
         <a href="my_reservation.php" class="text-white hover:text-gray-300 flex items-center gap-2">
             <span>&larr; Retour</span>
@@ -26,9 +39,7 @@
             Imprimer
         </button>
     </div>
-
     <div class="bg-white w-full max-w-2xl p-12 shadow-2xl text-black">
-        
         <div class="flex justify-between items-start border-b-2 border-[#C6A87C] pb-8 mb-8">
             <div>
                 <h1 class="font-serif text-3xl font-bold text-gray-900 tracking-wider">ASSAD ZOO</h1>
@@ -37,23 +48,21 @@
             </div>
             <div class="text-right">
                 <h2 class="text-4xl font-bold text-gray-200">FACTURE</h2>
-                <p class="text-gray-500 font-bold mt-1">#INV-88201</p>
-                <p class="text-sm text-gray-500">Date: 16/12/2025</p>
+                <p class="text-gray-500 font-bold mt-1">#INV-<?= $tour_id ?></p>
+                <p class="text-sm text-gray-500">Date: <?= date('d/m/Y') ?></p>
             </div>
         </div>
-
         <div class="mb-10 flex justify-between">
             <div>
                 <p class="text-xs text-gray-400 uppercase font-bold mb-1">Facturé à :</p>
-                <p class="font-bold text-lg">Achraf Chaoub</p>
-                <p class="text-sm text-gray-600">achraf@student.youcode.ma</p>
+                <p class="font-bold text-lg"><?= $user['full_name'] ?></p>
+                <p class="text-sm text-gray-600"><?= $user['email'] ?></p>
             </div>
             <div class="text-right">
                 <p class="text-xs text-gray-400 uppercase font-bold mb-1">Statut :</p>
                 <span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded border border-green-200">PAYÉ</span>
             </div>
         </div>
-
         <table class="w-full text-left mb-10">
             <thead>
                 <tr class="bg-gray-50 text-gray-500 text-xs uppercase">
@@ -66,33 +75,23 @@
             <tbody class="divide-y divide-gray-100 text-sm">
                 <tr>
                     <td class="py-4 px-4">
-                        <p class="font-bold text-gray-800">Safari Nocturne : Les Félins</p>
-                        <p class="text-xs text-gray-500">Guide: Ahmed Bennani</p>
+                        <p class="font-bold text-gray-800"><?= $tour['titre'] ?></p>
+                        <p class="text-xs text-gray-500">Guide: -</p>
                     </td>
-                    <td class="py-4 px-4 text-center">3</td>
-                    <td class="py-4 px-4 text-right">150.00 DH</td>
-                    <td class="py-4 px-4 text-right font-bold">450.00 DH</td>
+                    <td class="py-4 px-4 text-center">1</td>
+                    <td class="py-4 px-4 text-right"><?= number_format($prix,2) ?> DH</td>
+                    <td class="py-4 px-4 text-right font-bold"><?= number_format($total,2) ?> DH</td>
                 </tr>
             </tbody>
         </table>
-
         <div class="flex justify-end">
             <div class="w-1/2">
-                <div class="flex justify-between py-2 text-sm border-t border-gray-100">
-                    <span class="text-gray-500">Sous-total</span>
-                    <span class="font-bold">450.00 DH</span>
-                </div>
-                <div class="flex justify-between py-2 text-sm">
-                    <span class="text-gray-500">TVA (20%)</span>
-                    <span class="font-bold">90.00 DH</span>
-                </div>
                 <div class="flex justify-between py-4 border-t-2 border-[#C6A87C] mt-2">
-                    <span class="text-lg font-serif font-bold">Total TTC</span>
-                    <span class="text-xl font-bold text-[#C6A87C]">540.00 DH</span>
+                    <span class="text-lg font-serif font-bold">Total</span>
+                    <span class="text-xl font-bold text-[#C6A87C]"><?= number_format($total,2) ?> DH</span>
                 </div>
             </div>
         </div>
-
         <div class="mt-16 pt-8 border-t border-gray-100 text-center text-xs text-gray-400">
             <p>Merci de contribuer à la protection du Lion de l'Atlas.</p>
             <p>ASSAD Zoo S.A.R.L - RC 123456 - Rabat</p>
