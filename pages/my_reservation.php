@@ -56,7 +56,7 @@
                 actions += `<a href="inovice.php?id=${e.id}" target="_blank" class="px-4 py-2 border border-gray-700 text-gray-300 rounded hover:text-white hover:border-white transition text-sm"><i class='fa-solid fa-file-invoice mr-2'></i>Facture</a>`;
             }
             if(showReview) {
-                actions += `<button onclick=\"document.getElementById('reviewModal').classList.remove('hidden')\" class='px-4 py-2 border border-gold text-gold rounded hover:bg-gold hover:text-black transition text-sm'><i class='fa-regular fa-star mr-2'></i>Noter</button>`;
+                actions += `<button class='px-4 py-2 border border-gold text-gold rounded hover:bg-gold hover:text-black transition text-sm review-btn' data-tourid='${e.id}'><i class='fa-regular fa-star mr-2'></i>Noter</button>`;
             }
             container.innerHTML += `
             <div class="bg-[#111] border border-white/5 rounded-xl p-6 mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
@@ -78,16 +78,48 @@
     <div id="reviewModal" class="hidden fixed inset-0 z-[60] bg-black/80 flex items-center justify-center p-4">
         <div class="bg-[#1a1a1a] p-8 rounded-xl max-w-md w-full border border-gold/30">
             <h3 class="font-serif text-xl text-white mb-4">Laisser un avis</h3>
-            <div class="flex justify-center gap-2 text-2xl text-gray-600 mb-4 cursor-pointer">
+            <div id="starContainer" class="flex justify-center gap-2 text-2xl text-gray-600 mb-4 cursor-pointer">
                 <i class="fa-solid fa-star hover:text-gold"></i><i class="fa-solid fa-star hover:text-gold"></i><i class="fa-solid fa-star hover:text-gold"></i><i class="fa-solid fa-star hover:text-gold"></i><i class="fa-solid fa-star hover:text-gold"></i>
             </div>
-            <textarea class="w-full bg-black border border-gray-700 rounded p-3 text-white text-sm mb-4" rows="3" placeholder="Votre expérience..."></textarea>
+            <textarea id="reviewComment" class="w-full bg-black border border-gray-700 rounded p-3 text-white text-sm mb-4" rows="3" placeholder="Votre expérience..."></textarea>
             <div class="flex justify-end gap-3">
                 <button onclick="document.getElementById('reviewModal').classList.add('hidden')" class="text-gray-500 hover:text-white text-sm">Annuler</button>
-                <button class="bg-gold text-black font-bold px-4 py-2 rounded text-sm">Envoyer</button>
+                <button id="sendReviewBtn" class="bg-gold text-black font-bold px-4 py-2 rounded text-sm">Envoyer</button>
             </div>
         </div>
     </div>
+    <script>
+    let reviewTourId = null;
+    let reviewNote = 0;
+    document.addEventListener('click', function(e){
+        if(e.target.classList.contains('review-btn')){
+            reviewTourId = e.target.getAttribute('data-tourid');
+            document.getElementById('reviewModal').classList.remove('hidden');
+        }
+    });
+    const stars = document.querySelectorAll('#starContainer i');
+    stars.forEach((star, i) => {
+        star.addEventListener('click', function(){
+            reviewNote = i+1;
+            stars.forEach((s, j) => s.classList[j<=i ? 'add' : 'remove']('text-gold'));
+        });
+    });
+    document.getElementById('sendReviewBtn').onclick = function(){
+        const comment = document.getElementById('reviewComment').value;
+        if(reviewTourId && reviewNote && comment){
+            let fd = new FormData();
+            fd.append('tour_id', reviewTourId);
+            fd.append('note', reviewNote);
+            fd.append('comment', comment);
+            fetch('../includes/visitor/add_review.php', {
+                method: 'POST',
+                body: fd
+            }).then(response => response.text()).then(data => {
+                console.log('response data', data);
+            });
+        }
+    }
+    </script>
 
 </body>
 </html>
