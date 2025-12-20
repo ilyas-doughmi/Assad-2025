@@ -268,7 +268,7 @@ require_role("admin");
             url = "../../includes/admin/animals_actions/edit_animal.php";
             formData.append("id", animalId.value);
         } else {
-            url = "../../includes/admin/animals_actions/process_animal.php";
+            url = "../../includes/admin/animals_actions/create_animal.php";
         }
 
         fetch(url, {
