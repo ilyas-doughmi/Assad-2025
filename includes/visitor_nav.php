@@ -1,5 +1,5 @@
 <?php
-if (session_status() === PHP_SESSION_NONE) session_start();
+if(!isset($_SESSION)) session_start();
 $isConnected = isset($_SESSION['id']);
 ?>
 <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 py-4 border-b border-transparent">
@@ -13,6 +13,7 @@ $isConnected = isset($_SESSION['id']);
                 <span class="block text-[0.6rem] text-gold uppercase tracking-[0.2em] -mt-1">Maroc 2025</span>
             </div>
         </a>
+        <?php if($isConnected): ?>
         <div class="hidden md:flex items-center gap-8 text-sm uppercase tracking-wider font-medium text-gray-300">
             <a href="/assad-2025/index.php" class="hover:text-gold transition-colors<?php if(basename($_SERVER['SCRIPT_NAME'])=='index.php') echo ' text-white border-b border-gold'; ?>">Accueil</a>
             <a href="/assad-2025/pages/asaad.php" class="hover:text-gold transition-colors">L'Esprit Asaad</a>
@@ -20,6 +21,7 @@ $isConnected = isset($_SESSION['id']);
             <a href="/assad-2025/pages/tours.php" class="hover:text-gold transition-colors<?php if(basename($_SERVER['SCRIPT_NAME'])=='tours.php') echo ' text-white border-b border-gold'; ?>">Visites</a>
             <a href="/assad-2025/pages/my_reservation.php" class="hover:text-gold transition-colors<?php if(basename($_SERVER['SCRIPT_NAME'])=='my_reservation.php') echo ' text-white border-b border-gold'; ?>">Mes Visites</a>
         </div>
+        <?php endif; ?>
         <div class="flex items-center gap-4">
             <?php if(!$isConnected): ?>
                 <a href="/assad-2025/login.php" class="hidden md:block text-sm font-bold text-gray-300 hover:text-white transition-colors">Connexion</a>
