@@ -119,82 +119,29 @@ require_role("admin");
                 <table class="w-full text-left text-sm text-gray-400">
                     <thead class="bg-black text-gray-500 uppercase font-bold text-xs">
                         <tr>
-                            <th class="px-6 py-4">Titre de la Visite</th>
-                            <th class="px-6 py-4">Guide Responsable</th>
-                            <th class="px-6 py-4">Date & Heure</th>
-                            <th class="px-6 py-4">Prix</th>
-                            <th class="px-6 py-4">Remplissage</th>
-                            <th class="px-6 py-4">Statut</th>
-                            <th class="px-6 py-4 text-right">Actions</th>
+                            <th class="px-6 py-4">id</th>
+                            <th class="px-6 py-4">titre</th>
+                            <th class="px-6 py-4">guide_id</th>
+                            <th class="px-6 py-4">date_heure_debut</th>
+                            <th class="px-6 py-4">prix</th>
+                            <th class="px-6 py-4">status</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-white/5">
-                        
-                        <tr class="hover:bg-white/5 transition">
-                            <td class="px-6 py-4 font-bold text-white">Safari Nocturne : Les Félins</td>
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-[10px] text-white">AB</div>
-                                    <span>Ahmed B.</span>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">20 Déc. 21:00</td>
-                            <td class="px-6 py-4 text-gold font-bold">150 DH</td>
-                            <td class="px-6 py-4 w-32">
-                                <div class="text-xs mb-1 flex justify-between">
-                                    <span>18/20</span>
-                                    <span class="text-green-500">90%</span>
-                                </div>
-                                <div class="w-full bg-gray-800 rounded-full h-1.5">
-                                    <div class="bg-green-500 h-1.5 rounded-full" style="width: 90%"></div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 py-1 rounded bg-green-900/30 text-green-500 border border-green-900/50 text-xs font-bold">Planifié</span>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex justify-end gap-2">
-                                    <button onclick="openDetailsModal(1)" class="text-gray-400 hover:text-white transition" title="Voir Détails">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </button>
-                                    <button class="text-gray-400 hover:text-red-500 transition" title="Annuler Visite">
-                                        <i class="fa-solid fa-ban"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr class="hover:bg-white/5 transition opacity-60">
-                            <td class="px-6 py-4 font-bold text-white line-through">Déjeuner Girafes</td>
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-2">
-                                    <div class="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-[10px] text-white">SO</div>
-                                    <span>Sarah O.</span>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">21 Déc. 08:30</td>
-                            <td class="px-6 py-4 text-gray-500 font-bold">200 DH</td>
-                            <td class="px-6 py-4 w-32">
-                                <div class="text-xs mb-1 flex justify-between">
-                                    <span>5/10</span>
-                                    <span class="text-gray-500">50%</span>
-                                </div>
-                                <div class="w-full bg-gray-800 rounded-full h-1.5">
-                                    <div class="bg-gray-600 h-1.5 rounded-full" style="width: 50%"></div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4">
-                                <span class="px-2 py-1 rounded bg-red-900/30 text-red-500 border border-red-900/50 text-xs font-bold">Annulé</span>
-                            </td>
-                            <td class="px-6 py-4 text-right">
-                                <div class="flex justify-end gap-2">
-                                    <button class="text-gray-400 hover:text-red-500 transition" title="Supprimer définitivement">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-
+                        <?php
+                        include '../../includes/db.php';
+                        $q = mysqli_query($conn, "SELECT * FROM tours");
+                        while($row = mysqli_fetch_assoc($q)){
+                            echo '<tr>';
+                            echo '<td class="px-6 py-4">'.$row['id'].'</td>';
+                            echo '<td class="px-6 py-4">'.$row['titre'].'</td>';
+                            echo '<td class="px-6 py-4">'.$row['guide_id'].'</td>';
+                            echo '<td class="px-6 py-4">'.$row['date_heure_debut'].'</td>';
+                            echo '<td class="px-6 py-4">'.$row['prix'].'</td>';
+                            echo '<td class="px-6 py-4">'.$row['status'].'</td>';
+                            echo '</tr>';
+                        }
+                        ?>
                     </tbody>
                 </table>
             </div>
