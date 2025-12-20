@@ -58,31 +58,7 @@
 </head>
 <body class="bg-dark text-gray-100 font-sans selection:bg-gold selection:text-black">
 
-       <nav id="navbar" class="fixed top-0 w-full z-50 transition-all duration-300 py-4 border-b border-transparent">
-        <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
-            
-            <a href="../index.php" class="flex items-center gap-2 group">
-                <div class="w-10 h-10 bg-gradient-to-br from-gold to-yellow-800 rounded-full flex items-center justify-center text-black shadow-lg shadow-gold/20">
-                    <i class="fa-solid fa-lion"></i>
-                </div>
-                <div>
-                    <span class="font-serif font-bold text-xl tracking-widest text-white group-hover:text-gold transition-colors">ASSAD</span>
-                    <span class="block text-[0.6rem] text-gold uppercase tracking-[0.2em] -mt-1">Maroc 2025</span>
-                </div>
-            </a>
-
-            <div class="hidden md:flex items-center gap-8 text-sm uppercase tracking-wider font-medium text-gray-300">
-                <a href="../index.php" class="hover:text-gold transition-colors">Accueil</a>
-                <a href="pages/asaad.php" class="text-white border-b border-gold">L'Esprit Asaad</a>
-                <a href="#" class="hover:text-gold transition-colors">Animaux</a>
-                <a href="#" class="hover:text-gold transition-colors">Visites</a>
-            </div>
-
-            <div class="flex items-center gap-4">
-                <a href="login.php" class="hidden md:block text-sm font-bold text-gray-300 hover:text-white transition-colors">Connexion</a>
-                <a href="register.php" class="px-6 py-2 bg-gold text-black text-sm font-bold rounded-sm uppercase tracking-widest hover:bg-white transition-colors shadow-lg shadow-gold/20">
-                    Rejoindre
-                </a>
+    <?php include(dirname(__DIR__).'/includes/visitor_nav.php'); ?>
             </div>
         </div>
     </nav>

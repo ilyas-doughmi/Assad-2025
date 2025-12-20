@@ -43,20 +43,7 @@
 </head>
 <body class="bg-dark text-gray-100 font-sans selection:bg-gold selection:text-black">
 
-    <nav class="fixed top-0 w-full z-50 bg-black/90 backdrop-blur-md border-b border-white/10 shadow-lg">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <a href="../index.php" class="flex items-center gap-2">
-                <i class="fa-solid fa-crown text-gold text-xl"></i>
-                <span class="font-serif font-bold text-xl tracking-widest text-white">ASSAD</span>
-            </a>
-            <div class="hidden md:flex gap-8 text-sm uppercase tracking-wider font-medium text-gray-400">
-                <a href="index.php" class="hover:text-gold transition">Accueil</a>
-                <a href="pages/asaad.php" class="hover:text-gold transition">Asaad</a>
-                <a href="animals.php" class="text-white border-b border-gold">Animaux</a> <a href="tours.php" class="hover:text-gold transition">Visites</a>
-            </div>
-            <a href="login.php" class="text-sm font-bold text-gold border border-gold px-4 py-2 rounded hover:bg-gold hover:text-black transition">Connexion</a>
-        </div>
-    </nav>
+    <?php include(dirname(__DIR__).'/includes/visitor_nav.php'); ?>
 
     <header class="pt-32 pb-10 px-6 bg-[#0a0a0a] border-b border-white/5 relative overflow-hidden">
         <div class="absolute top-0 right-0 w-96 h-96 bg-gold/5 rounded-full filter blur-3xl translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>

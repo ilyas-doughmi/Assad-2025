@@ -14,10 +14,7 @@
 </head>
 <body class="bg-dark text-gray-100 font-sans">
     
-    <nav class="fixed w-full z-50 bg-black/90 border-b border-white/10 px-6 py-4 flex justify-between items-center">
-        <a href="../index.php" class="flex items-center gap-2"><i class="fa-solid fa-crown text-gold"></i> <span class="font-serif font-bold text-white">ASSAD</span></a>
-        <a href="profile.php" class="text-gray-400 hover:text-white"><i class="fa-solid fa-user-gear mr-2"></i> Mon Profil</a>
-    </nav>
+    <?php include(dirname(__DIR__).'/includes/visitor_nav.php'); ?>
 
     <div class="max-w-4xl mx-auto px-6 pt-32 pb-12">
         <h1 class="font-serif text-3xl text-white font-bold mb-8">Mes Réservations</h1>

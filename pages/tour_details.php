@@ -38,10 +38,7 @@ $guide = getGuideName($guide_id);
 </head>
 <body class="bg-dark text-gray-100 font-sans">
 
-    <nav class="fixed w-full z-50 bg-black/90 border-b border-white/10 px-6 py-4 flex justify-between items-center">
-        <a href="tours.php" class="text-gray-400 hover:text-white"><i class="fa-solid fa-arrow-left mr-2"></i> Retour aux visites</a>
-        <span class="font-serif font-bold text-xl tracking-widest text-gold">ASSAD</span>
-        <div class="w-20"></div> </nav>
+    <?php include(dirname(__DIR__).'/includes/visitor_nav.php'); ?>
 
     <div class="h-[50vh] relative">
         <img src="<?=  $tour_info["tour_image"] ?>" class="w-full h-full object-cover opacity-60">
@@ -153,8 +150,9 @@ $guide = getGuideName($guide_id);
                 })
                 .then(response=>response.text())
                 .then(data=>{
-                    if(data == "")
+                    console.log(data);
                 })
+                
             }
         }
     </script>
