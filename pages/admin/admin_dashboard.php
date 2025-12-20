@@ -146,7 +146,16 @@ require_role("admin");
                         <i class="fa-solid fa-coins text-6xl text-white"></i>
                     </div>
                     <p class="text-gray-500 text-xs font-bold uppercase tracking-widest mb-2">Revenus Billetterie</p>
-                    <h3 class="text-3xl font-bold text-white">85k <span class="text-sm font-normal text-gray-500">DH</span></h3>
+                    <?php
+                    include_once '../../includes/db.php';
+                    $q = mysqli_query($conn, "SELECT prix FROM tours");
+                    $total = 0;
+                    foreach($q as $row){
+                        $total += $row['prix'];
+                    }
+                   
+                    ?>
+                    <h3 class="text-3xl font-bold text-white"><?php echo $total; ?> <span class="text-sm font-normal text-gray-500">DH</span></h3>
                     <p class="text-xs text-green-500 mt-2">CAN 2025 Boost</p>
                 </div>
             </div>
