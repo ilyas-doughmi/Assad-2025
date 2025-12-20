@@ -3,9 +3,15 @@
 require_once("../db.php");
 $message = "";
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST["email"];
     $password = $_POST["password"];
+    if (!preg_match('/^[^@\s]+@[^@\s]+\.[^@\s]+$/', $email)) {
+        $message = "Invalid email format";
+        header("location: ../../login.php?message=" . $message);
+        exit();
+    }
 
     $query = "SELECT * FROM users WHERE email = ?";
     $stmt = mysqli_prepare($conn, $query);

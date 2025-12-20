@@ -3,11 +3,17 @@
 require_once("../db.php");
 $message = "";
 
+
 if($_SERVER["REQUEST_METHOD"] == "POST"){
     $role = $_POST["role"];
     $nom = $_POST["nom"];
     $email = $_POST["email"];
     $password = $_POST["password"];
+    if (!preg_match('/^[^@\s]+@[^@\s]+\.[^@\s]+$/', $email)) {
+        $message = "Invalid email format";
+        header("location: ../../register.php?message=".$message);
+        exit();
+    }
     $password = password_hash($password,PASSWORD_DEFAULT);
     $isVisitor = 1;
 
