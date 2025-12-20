@@ -16,39 +16,64 @@
     
     <?php include(dirname(__DIR__).'/includes/visitor_nav.php'); ?>
 
+
     <div class="max-w-4xl mx-auto px-6 pt-32 pb-12">
         <h1 class="font-serif text-3xl text-white font-bold mb-8">Mes Réservations</h1>
+        <div id="reservations_container"></div>
+    </div>
 
-        <h2 class="text-xs font-bold text-gold uppercase tracking-widest mb-4">À Venir</h2>
-        <div class="bg-[#111] border border-white/5 rounded-xl p-6 mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-4">
-                <img src="https://images.unsplash.com/photo-1549366021-9f761d450615?q=80&w=1935" class="w-20 h-20 object-cover rounded-lg">
-                <div>
-                    <h3 class="font-serif text-lg text-white">Safari Nocturne</h3>
-                    <p class="text-sm text-gray-500">20 Déc. 2025 • 21:00</p>
-                    <span class="inline-block bg-green-900/30 text-green-500 text-[10px] font-bold px-2 py-0.5 rounded border border-green-900/50 mt-1">Confirmé</span>
-                </div>
-            </div>
-            <div class="flex gap-3">
-                <a href="invoice.php?id=1" target="_blank" class="px-4 py-2 border border-gray-700 text-gray-300 rounded hover:text-white hover:border-white transition text-sm"><i class="fa-solid fa-file-invoice mr-2"></i> Facture</a>
-                <button class="px-4 py-2 bg-gold text-black font-bold rounded hover:bg-white transition text-sm">Voir Billet</button>
-            </div>
-        </div>
-
-        <h2 class="text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Historique</h2>
-        <div class="bg-[#111] border border-white/5 rounded-xl p-6 opacity-75">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+    <script>
+    fetch('../includes/visitor/get_my_reservations.php')
+    .then(res => res.json())
+    .then(data => {
+        const container = document.getElementById('reservations_container');
+        if(data.length === 0) {
+            container.innerHTML = '<div class="text-center text-gray-500">Aucune réservation trouvée.</div>';
+            return;
+        }
+        data.forEach(e => {
+            let status = '';
+            let statusClass = '';
+            let showFacture = false;
+            let showReview = false;
+            if(e.status === 'full' || e.status === 'open') {
+                status = 'Confirmé';
+                statusClass = 'bg-green-900/30 text-green-500 border-green-900/50';
+                showFacture = true;
+            } else if(e.status === 'cancelled') {
+                status = 'Annulé';
+                statusClass = 'bg-red-900/30 text-red-500 border-red-900/50';
+            } else {
+                status = 'Terminé';
+                statusClass = 'bg-gray-700 text-gray-400 border-gray-700';
+                showReview = true;
+            }
+            let date = new Date(e.date_heure_debut);
+            let dateStr = date.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+            let timeStr = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+            let actions = '';
+            if(showFacture) {
+                actions += `<a href="inovice.php?id=${e.id}" target="_blank" class="px-4 py-2 border border-gray-700 text-gray-300 rounded hover:text-white hover:border-white transition text-sm"><i class='fa-solid fa-file-invoice mr-2'></i>Facture</a>`;
+            }
+            if(showReview) {
+                actions += `<button onclick=\"document.getElementById('reviewModal').classList.remove('hidden')\" class='px-4 py-2 border border-gold text-gold rounded hover:bg-gold hover:text-black transition text-sm'><i class='fa-regular fa-star mr-2'></i>Noter</button>`;
+            }
+            container.innerHTML += `
+            <div class="bg-[#111] border border-white/5 rounded-xl p-6 mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="flex items-center gap-4">
-                    <img src="https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?q=80&w=1986" class="w-20 h-20 object-cover rounded-lg grayscale">
+                    <img src="${e.tour_image}" class="w-20 h-20 object-cover rounded-lg">
                     <div>
-                        <h3 class="font-serif text-lg text-gray-300">Rencontre Asaad</h3>
-                        <p class="text-sm text-gray-600">10 Déc. 2025 • Terminé</p>
+                        <h3 class="font-serif text-lg text-white">${e.titre}</h3>
+                        <p class="text-sm text-gray-500">${dateStr} • ${timeStr}</p>
+                        <span class="inline-block ${statusClass} text-[10px] font-bold px-2 py-0.5 rounded border mt-1">${status}</span>
                     </div>
                 </div>
-                <button onclick="document.getElementById('reviewModal').classList.remove('hidden')" class="px-4 py-2 border border-gold text-gold rounded hover:bg-gold hover:text-black transition text-sm"><i class="fa-regular fa-star mr-2"></i> Noter</button>
+                <div class="flex gap-3">${actions}</div>
             </div>
-        </div>
-    </div>
+            `;
+        });
+    });
+    </script>
 
     <div id="reviewModal" class="hidden fixed inset-0 z-[60] bg-black/80 flex items-center justify-center p-4">
         <div class="bg-[#1a1a1a] p-8 rounded-xl max-w-md w-full border border-gold/30">
