@@ -241,9 +241,10 @@ require_role("guide");
                             <div class="flex justify-between text-xs mb-1">
                                 <span class="text-gray-400">Capacité</span>
                                 <span class="text-white font-bold">${e.capacity_max} places</span>
+                                <span class="text-yellow-500 font-bold" id="percent_${e.id}">0%</span>
                             </div>
                             <div class="w-full bg-gray-800 rounded-full h-2">
-                                <div class="bg-yellow-500 h-2 rounded-full" style="width: 20%"></div>
+                                <div class="bg-yellow-500 h-2 rounded-full" id="bar_${e.id}" style="width: 0%"></div>
                             </div>
                         </div>
 
@@ -279,9 +280,10 @@ require_role("guide");
                             <div class="flex justify-between text-xs mb-1">
                                 <span class="text-gray-400">Capacité</span>
                                 <span class="text-white font-bold">${e.capacity_max} places</span>
+                                <span class="text-green-500 font-bold" id="percent_${e.id}">0%</span>
                             </div>
                             <div class="w-full bg-gray-800 rounded-full h-2">
-                                <div class="bg-green-500 h-2 rounded-full" style="width: 90%"></div>
+                                <div class="bg-green-500 h-2 rounded-full" id="bar_${e.id}" style="width: 0%"></div>
                             </div>
                         </div>
 
@@ -332,6 +334,23 @@ require_role("guide");
                     
                 tours_container.insertAdjacentHTML("afterbegin",card);
 
+                });
+                // After rendering, fetch reservations for each tour and update percentage
+                data.forEach((e) => {
+                    fetch(`../../includes/guide/get_tour_reservations.php?tour_id=${e.id}`)
+                        .then(res => res.text())
+                        .then(count => {
+                            let percent = 0;
+                            if (e.capacity_max > 0) {
+                                percent = Math.round((parseInt(count) / e.capacity_max) * 100);
+                                if (percent > 100) percent = 100;
+                                if (percent < 0) percent = 0;
+                            }
+                            const percentSpan = document.getElementById(`percent_${e.id}`);
+                            const barDiv = document.getElementById(`bar_${e.id}`);
+                            if (percentSpan) percentSpan.innerText = percent + '%';
+                            if (barDiv) barDiv.style.width = percent + '%';
+                        });
                 });
             })
         }
