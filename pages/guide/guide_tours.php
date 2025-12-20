@@ -98,7 +98,7 @@ require_role("guide");
             </div>
 
             <div id="tours_container" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                </div>
+            </div>
         </div>
     </main>
 
@@ -165,6 +165,20 @@ require_role("guide");
         </div>
     </div>
 
+    <div id="cancelModal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-[#111] w-full max-w-sm rounded-xl border border-red-900/30 shadow-2xl p-6 relative animate-fade-in-up">
+            <h3 class="font-serif text-xl text-white font-bold mb-2">Annuler la visite ?</h3>
+            <p class="text-gray-400 text-sm mb-6">Cette action changera le statut de la visite en "Annulé". Les réservations existantes seront affectées.</p>
+            
+            <input type="hidden" id="cancel_id_input">
+            
+            <div class="flex gap-3">
+                <button onclick="closeCancelModal()" class="flex-1 py-2 border border-gray-700 text-gray-300 rounded hover:text-white transition">Non, retour</button>
+                <button onclick="confirmCancel()" class="flex-1 py-2 bg-red-600 text-white font-bold rounded hover:bg-red-700 transition">Oui, annuler</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let toursList = [];
 
@@ -190,7 +204,26 @@ require_role("guide");
                     const tourDate = new Date(e.date_heure_debut);
                     const today = new Date();
                     
-                        if(e.status == "open" && tourDate >= today){
+                    if(e.status == "cancelled"){
+                        card = `<div class="bg-dark-card border border-red-900/20 rounded-xl p-6 shadow-lg opacity-75 grayscale hover:grayscale-0 transition duration-300">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <span class="bg-red-900/20 text-red-500 border border-red-900/30 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block">Annulé</span>
+                                <h3 class="font-serif text-xl text-white font-bold">${e.titre}</h3>
+                                <p class="text-sm text-gray-500 mt-1"><i class="fa-regular fa-calendar mr-2 text-gray-500"></i>${e.date_heure_debut}</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="block text-2xl font-bold text-gray-500">${e.prix} <span class="text-xs font-normal text-gray-600">DH</span></span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 border-t border-white/5 pt-4">
+                            <button class="w-full py-2 text-center text-red-500 text-sm cursor-not-allowed font-bold">
+                                <i class="fa-solid fa-ban mr-2"></i> Visite Annulée
+                            </button>
+                        </div>
+                    </div>`
+                    }
+                    else if(e.status == "open" && tourDate >= today){
                         card = `<div class="bg-dark-card border border-white/5 rounded-xl p-6 shadow-lg hover:border-gold/30 transition group">
                         <div class="flex justify-between items-start mb-4">
                             <div>
@@ -221,7 +254,7 @@ require_role("guide");
                             <button onclick="openEditModal(${i})" class="w-10 h-10 flex items-center justify-center rounded border border-gray-700 hover:border-gold hover:text-gold transition" title="Modifier">
                                 <i class="fa-solid fa-pen"></i>
                             </button>
-                            <button onclick="deleteTour(${e.id})" class="w-10 h-10 flex items-center justify-center rounded border border-gray-700 hover:border-red-500 hover:text-red-500 transition" title="Annuler">
+                            <button onclick="openCancelModal(${e.id})" class="w-10 h-10 flex items-center justify-center rounded border border-gray-700 hover:border-red-500 hover:text-red-500 transition" title="Annuler">
                                 <i class="fa-solid fa-ban"></i>
                             </button>
                         </div>
@@ -259,7 +292,7 @@ require_role("guide");
                             <button onclick="openEditModal(${i})" class="w-10 h-10 flex items-center justify-center rounded border border-gray-700 hover:border-gold hover:text-gold transition" title="Modifier">
                                 <i class="fa-solid fa-pen"></i>
                             </button>
-                            <button onclick="deleteTour(${e.id})" class="w-10 h-10 flex items-center justify-center rounded border border-gray-700 hover:border-red-500 hover:text-red-500 transition" title="Annuler">
+                            <button onclick="openCancelModal(${e.id})" class="w-10 h-10 flex items-center justify-center rounded border border-gray-700 hover:border-red-500 hover:text-red-500 transition" title="Annuler">
                                 <i class="fa-solid fa-ban"></i>
                             </button>
                         </div>
@@ -324,19 +357,28 @@ require_role("guide");
             document.getElementById('editModal').classList.add('hidden');
         }
 
-        function deleteTour(id) {
-             if(confirm("Voulez-vous vraiment annuler cette visite ?")) {
-                 let formData = new FormData();
-                 formData.append("id", id);
-                 
-                 fetch("../../includes/guide/visite_action/cancel_visite.php", {
-                     method: "POST",
-                     body: formData
-                 }).then(res => {
-                     getTours();
-                 });
-             }
+        function openCancelModal(id) {
+            document.getElementById('cancel_id_input').value = id;
+            document.getElementById('cancelModal').classList.remove('hidden');
+        }
+
+        function closeCancelModal() {
+            document.getElementById('cancelModal').classList.add('hidden');
+        }
+
+        function confirmCancel() {
+            const id = document.getElementById('cancel_id_input').value;
+            let formData = new FormData();
+            formData.append("id", id);
+            
+            fetch("../../includes/guide/visite_action/cancel_visite.php", {
+                method: "POST",
+                body: formData
+            }).then(res => {
+                closeCancelModal();
+                getTours();
+            });
         }
     </script>
 </body>
-</html>
+</html> 
