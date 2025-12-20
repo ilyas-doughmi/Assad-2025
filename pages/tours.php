@@ -19,18 +19,8 @@
 </head>
 <body class="bg-dark text-gray-100 font-sans">
 
-    <nav class="fixed w-full z-50 bg-black/90 border-b border-white/10 px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center gap-2">
-            <i class="fa-solid fa-crown text-gold text-xl"></i>
-            <span class="font-serif font-bold text-xl tracking-widest text-white">ASSAD</span>
-        </div>
-        <div class="hidden md:flex gap-8 text-sm font-bold text-gray-400 uppercase tracking-widest">
-            <a href="../index.php" class="hover:text-gold transition">Accueil</a>
-            <a href="animals.php" class="hover:text-gold transition">Animaux</a>
-            <a href="#" class="text-white border-b border-gold">Visites</a>
-        </div>
-        <a href="my_reservations.php" class="text-sm border border-gold text-gold px-4 py-2 rounded hover:bg-gold hover:text-black transition font-bold">Mes Tickets</a>
-    </nav>
+
+    <?php include(dirname(__DIR__).'/includes/visitor_nav.php'); ?>
 
     <header class="pt-32 pb-12 px-6 text-center bg-[#0a0a0a]">
         <h1 class="font-serif text-4xl text-white font-bold mb-4">Expéditions Guidées</h1>
@@ -69,7 +59,7 @@
             let data = new FormData();
             data.append("gettours","");
 
-            fetch("../includes/guide/visite_data.php",{
+            fetch("../includes/visitor/visites_data.php",{
                 method:"POST",
                 body:data
             })
