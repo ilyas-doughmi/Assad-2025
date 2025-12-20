@@ -18,6 +18,7 @@ $isConnected = isset($_SESSION['id']);
             <a href="/assad-2025/pages/asaad.php" class="hover:text-gold transition-colors">L'Esprit Asaad</a>
             <a href="/assad-2025/pages/animals.php" class="hover:text-gold transition-colors">Animaux</a>
             <a href="/assad-2025/pages/tours.php" class="hover:text-gold transition-colors<?php if(basename($_SERVER['SCRIPT_NAME'])=='tours.php') echo ' text-white border-b border-gold'; ?>">Visites</a>
+            <a href="/assad-2025/pages/my_reservation.php" class="hover:text-gold transition-colors<?php if(basename($_SERVER['SCRIPT_NAME'])=='my_reservation.php') echo ' text-white border-b border-gold'; ?>">Mes Visites</a>
         </div>
         <div class="flex items-center gap-4">
             <?php if(!$isConnected): ?>
