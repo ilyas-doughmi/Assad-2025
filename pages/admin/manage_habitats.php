@@ -179,25 +179,27 @@ require_role("admin");
         const modalTitle = document.getElementById('modalTitle');
         const formAction = document.getElementById('formAction');
         const habitatId = document.getElementById('habitatId');
-
+        
         const nomInput = document.getElementById('nom');
         const descInput = document.getElementById('desc');
         const climateInput = document.getElementById('climate');
         const zoneInput = document.getElementById('zone');
+        const imageInput = document.getElementById('imageInput');
 
         function openModal(mode, data = null) {
             modal.classList.remove('hidden');
-
+            
             if (mode === 'edit' && data) {
                 modalTitle.innerText = "Modifier Habitat";
                 formAction.value = "update";
                 habitatId.value = data.id;
-
-                // Pre-fill
-                nomInput.value = data.name;
-                descInput.value = data.desc;
-                climateInput.value = data.climate;
-                zoneInput.value = data.zone;
+                
+                
+                nomInput.value = data.nom;
+                descInput.value = data.description;
+                climateInput.value = data.typeclimat || 'aride'; 
+                zoneInput.value = data.zonezoo || 'nord';
+                if(imageInput) imageInput.value = data.image || '';
             } else {
                 modalTitle.innerText = "Ajouter un Habitat";
                 formAction.value = "add";
@@ -205,52 +207,80 @@ require_role("admin");
                 nomInput.value = "";
                 descInput.value = "";
                 climateInput.value = "aride";
+                if(imageInput) imageInput.value = "";
             }
         }
 
         function closeModal() {
             modal.classList.add('hidden');
         }
+
         getHabitats();
 
-        function getHabitats() {
+        function getHabitats(){
             const h_container = document.getElementById("h_container");
+            h_container.innerHTML = ""; 
+
             let data = new FormData();
+            data.append("habitat","");
 
-            data.append("habitat", "");
+            fetch("../../includes/admin/habitat_data.php",{
+                method : "POST",
+                body : data
+            })
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(function(e){
+                    
+                    const safeName = e.nom.replace(/'/g, "\\'");
+                    const safeDesc = e.description.replace(/'/g, "\\'");
 
-            fetch("../../includes/admin/habitat_data.php", {
-                    method: "POST",
-                    body: data
-                })
-
-                .then(response => response.json())
-                .then(data => {
-                        data.forEach(function(e) {
-                            console.log(e);
-                            const card = `                        <tr class="hover:bg-white/5 transition">
+                    const card = `
+                        <tr class="hover:bg-white/5 transition">
                             <td class="px-6 py-4">
-                                <img src="${e.image}" class="w-16 h-10 rounded-md object-cover border border-gray-700">
+                                <img src="${e.image}" class="w-16 h-10 rounded-md object-cover border border-gray-700" onerror="this.src='https://via.placeholder.com/150'">
                             </td>
                             <td class="px-6 py-4 font-bold text-white">${e.nom}</td>
                             <td class="px-6 py-4 truncate max-w-xs">${e.description}</td>
                             <td class="px-6 py-4 text-right">
                                 <div class="flex justify-end gap-2">
-                                    <button onclick="openModal('edit', {id:1, name:'Savane Africaine', desc:'Vastes plaines...', climate:'aride', zone:'sud'})" class="w-8 h-8 rounded border border-gray-600 hover:border-gold hover:text-gold transition flex items-center justify-center">
+                                    <button onclick="openModal('edit', {id:${e.id}, nom:'${safeName}', description:'${safeDesc}', typeclimat:'${e.typeclimat}', zonezoo:'${e.zonezoo}', image:'${e.image}'})" 
+                                            class="w-8 h-8 rounded border border-gray-600 hover:border-gold hover:text-gold transition flex items-center justify-center">
                                         <i class="fa-solid fa-pen"></i>
                                     </button>
-                                    <button class="w-8 h-8 rounded border border-gray-600 hover:border-red-500 hover:text-red-500 transition flex items-center justify-center">
+                                    
+                                    <button onclick="deleteHabitat(${e.id})" class="w-8 h-8 rounded border border-gray-600 hover:border-red-500 hover:text-red-500 transition flex items-center justify-center">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
                                 </div>
                             </td>
-                        </tr>`
+                        </tr>`;
 
-                            h_container.insertAdjacentHTML("afterbegin", card);
-                        })
-                    }
+                    h_container.insertAdjacentHTML("afterbegin", card);
+                })
+            })
+            .catch(error => console.error('Erreur:', error));
+        }
 
-                )
+        function deleteHabitat(id) {
+            if(!confirm("Êtes-vous sûr de vouloir supprimer cet habitat ?")) return;
+
+            let formData = new FormData();
+            formData.append("id", id);
+
+            fetch("../../includes/admin/habitat_actions/delete_habitat.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.text())
+            .then(res => {
+                if (res.trim() === "success") {
+                    getHabitats(); 
+                } else {
+                    alert("Erreur lors de la suppression: " + res);
+                }
+            })
+            .catch(err => console.error(err));
         }
     </script>
 </body>
